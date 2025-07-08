@@ -1,0 +1,127 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+  local sell = nil
+  local use = nil
+'''
+position = "after"
+payload = '''
+local lock = nil
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+  local sell = nil
+  local use = nil
+'''
+position = "after"
+payload = '''
+card.ability.locked = card.ability.locked or false
+card.ability.lock_text = card.ability.locked and "Locked " or "Unlocked "
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+  if card.area and card.area.config.type == 'joker' then
+'''
+position = "after"
+payload = '''
+  lock = {
+    n = G.UIT.C,
+    config = {
+      align = "cr"
+    }, 
+    nodes = {  
+      {
+        n = G.UIT.C,
+        config = {
+          ref_table = card,
+          align = "cr",
+          maxw = 1.45,
+          padding = 0.1,
+          r = 0.08,
+          minw = 1.45,
+          minh = (card.area and card.area.config.type == 'joker') and 0 or 1,
+          hover = true,
+          shadow = true,
+          colour = G.C.GOLD,
+          one_press = false,
+          button = 'lock_toggle',
+          func = 'can_lock_card'
+        },
+        nodes = {
+          {
+            n = G.UIT.B,
+            config = {
+              w = 0.1,
+              h = 0.3
+            }
+          },
+          {
+            n = G.UIT.T,
+            config = {
+              align = "cr",
+              ref_table = card.ability,
+              ref_value = "lock_text",
+              colour = G.C.UI.TEXT_LIGHT,
+              scale = 0.45,
+              shadow = true
+            }
+          }
+        }
+      }
+    }
+  }
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+          {n=G.UIT.R, config={align = 'cl'}, nodes={
+            sell
+          }},
+'''
+position = "before"
+payload = '''
+{
+  n = G.UIT.R,
+  config = {
+    align = 'cl'
+  }, 
+  nodes = {
+    lock
+  }
+},
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+        not self.ability.eternal then
+'''
+position = "before"
+payload = '''
+not self.ability.locked and
+'''
+match_indent = true
+times = 1

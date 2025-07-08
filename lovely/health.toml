@@ -1,0 +1,343 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+    local spacing = 0.13
+    local temp_col = G.C.DYN_UI.BOSS_MAIN
+    local temp_col2 = G.C.DYN_UI.BOSS_DARK
+'''
+position = "before"
+payload = '''
+local bar_args = {}
+bar_args.colour = G.C.RED
+bar_args.bg_colour = G.C.CLEAR
+bar_args.label_scale = 0.5
+bar_args.label_padding = 0.1
+bar_args.label_minh = 0.65
+bar_args.label_minw = 1.1
+bar_args.label_vert = nil
+bar_args.label_position = "Top"
+bar_args.min = 0
+bar_args.max = 1
+bar_args.tooltip = nil
+
+bar_args.reverse_fill = false
+
+bar_args.bar_rotation = "Horizontal"
+bar_args.w = 1.10
+bar_args.h = 0.65
+bar_args.label_degree = 0
+
+bar_args.detailed_tooltip = nil
+
+bar_args.ref_table = G.GAME
+bar_args.ref_value = "health"
+
+local start_val = bar_args.w * ((G.GAME.health or 100) / 100 - bar_args.min) / (bar_args.max - bar_args.min)
+
+local health_bar = {
+  n = G.UIT.C,
+  config = {
+    align = "cm",
+    minw = bar_args.w,
+    minh = bar_args.h,
+    padding = bar_args.padding,
+    r = 0.1,
+    colour = G.C.CLEAR,
+    focus_args = {
+      type = 'slider'
+    }
+  },
+  nodes = {
+    {
+      n = G.UIT.C,
+      config = {
+        align = "cl",
+        minw = bar_args.w,
+        minh = bar_args.h,
+        r = 0.1,
+        colour = bar_args.bg_colour,
+        emboss = 0.05,
+        func = 'health_bar',
+        refresh_movement = true
+      },
+      nodes = {
+        {
+          n = G.UIT.B,
+          config = {
+            w = start_val,
+            h = bar_args.h,
+            colour = bar_args.colour,
+            ref_table = bar_args,
+            refresh_movement = true,
+            r = 0.1
+          },
+          nodes = {
+            {
+              n = G.UIT.O, 
+              config = {
+                id = 'health_UI_count',
+                object = DynaText({
+                  string = {
+                    {
+                      ref_table = G.GAME, 
+                      ref_value = 'health'
+                    }
+                  }, 
+                  font = G.LANGUAGES['en-us'].font,
+                  colours = {
+                    G.C.UI.TEXT_LIGHT
+                  },
+                  shadow = true, 
+                  rotate = true, 
+                  scale = scale
+                })
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+          {n=G.UIT.R, config={id = 'run_info_button', align = "cm", minh = 1.75, minw = 1.5,padding = 0.05, r = 0.1, hover = true, colour = G.C.RED, button = "run_info", shadow = true}, nodes={
+            {n=G.UIT.R, config={align = "cm", padding = 0, maxw = 1.4}, nodes={
+              {n=G.UIT.T, config={text = localize('b_run_info_1'), scale = 1.2*scale, colour = G.C.UI.TEXT_LIGHT, shadow = true}}
+            }},
+            {n=G.UIT.R, config={align = "cm", padding = 0, maxw = 1.4}, nodes={
+              {n=G.UIT.T, config={text = localize('b_run_info_2'), scale = 1*scale, colour = G.C.UI.TEXT_LIGHT, shadow = true, focus_args = {button = G.F_GUIDE and 'guide' or 'back', orientation = 'bm'}, func = 'set_button_pip'}}
+            }}
+          }},
+          {n=G.UIT.R, config={align = "cm", minh = 1.75, minw = 1.5,padding = 0.05, r = 0.1, hover = true, colour = G.C.ORANGE, button = "options", shadow = true}, nodes={
+            {n=G.UIT.C, config={align = "cm", maxw = 1.4, focus_args = {button = 'start', orientation = 'bm'}, func = 'set_button_pip'}, nodes={
+              {n=G.UIT.T, config={text = localize('b_options'), scale = scale, colour = G.C.UI.TEXT_LIGHT, shadow = true}}
+            }},
+          }}
+'''
+position = "at"
+payload = '''
+        {
+          n = G.UIT.R,
+          config = {
+            align = "cm"
+          },
+          nodes = {
+            {
+              n = G.UIT.C,
+              config = {
+                align = "cm", 
+                padding = 0.05, 
+                h = 1.25,
+                minw = 1.5, 
+                colour = temp_col, 
+                emboss = 0.05, 
+                r = 0.1
+              }, 
+              nodes = {
+                {
+                  n = G.UIT.R, 
+                  config = {
+                    align = "cm", 
+                    minh = 0.33, 
+                    maxw = 1.35
+                  }, 
+                  nodes = {
+                    {
+                      n = G.UIT.T, 
+                      config = {
+                        text = "Health", 
+                        scale = 0.85 * scale, 
+                        colour = G.C.UI.TEXT_LIGHT, 
+                        shadow = true
+                      }
+                    },
+                  }
+                },
+                {
+                  n = G.UIT.R, 
+                  config = {
+                    align = "cl", 
+                    r = 0.1, 
+                    minh = 0.75,
+                    minw = 1.2, 
+                    colour = temp_col2
+                  }, 
+                  nodes = {
+                    {
+                      n = G.UIT.B,
+                      config = {
+                        w = 0.08,
+                        h = 0.6
+                      }
+                    },
+                    {
+                      n = G.UIT.C,
+                      config = {
+                        id = 'health_UI_bar',
+                        align = "cm",
+                        maxh = 0.65,
+                        maxw = 1.05,
+                        minw = 1.05,
+                        colour = G.C.RED,
+                        refresh_movement = true,
+                        r = 0.1,
+                        func = 'update_health'
+                      },
+                      nodes = {
+                        {
+                          n = G.UIT.O,
+                          config = {
+                            object = DynaText({
+                              string = {
+                                {
+                                  ref_table = G.GAME, 
+                                  ref_value = 'health'
+                                }
+                              }, 
+                              font = G.LANGUAGES['en-us'].font, 
+                              colours = {
+                                G.C.UI.TEXT_LIGHT
+                              },
+                              shadow = true, 
+                              rotate = true, 
+                              scale = scale
+                            }),
+                            id = 'health_UI_count'
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          n = G.UIT.R, 
+          config = {
+            id = 'run_info_button', 
+            align = "cm", 
+            minh = 1.2, -- originally 1.75
+            minw = 1.5,
+            padding = 0.05, 
+            r = 0.1, 
+            hover = true, 
+            colour = G.C.RED, 
+            button = "run_info", 
+            shadow = true
+          }, 
+          nodes = {
+            {
+              n = G.UIT.R, 
+              config = {
+                align = "cm", 
+                padding = 0, 
+                maxw = 1.4
+              }, 
+              nodes={
+                {
+                  n = G.UIT.T, 
+                  config = {
+                    text = localize('b_run_info_1'), 
+                    scale = 1.2 * scale, 
+                    colour = G.C.UI.TEXT_LIGHT, 
+                    shadow = true
+                  }
+                }
+              }
+            },
+            {
+              n = G.UIT.R, 
+              config = {
+                align = "cm", 
+                padding = 0, 
+                maxw = 1.4
+              }, 
+              nodes = {
+                {
+                  n = G.UIT.T, 
+                  config = {
+                    text = localize('b_run_info_2'), 
+                    scale = 1 * scale, 
+                    colour = G.C.UI.TEXT_LIGHT, 
+                    shadow = true, 
+                    focus_args = {
+                      button = G.F_GUIDE and 'guide' or 'back', 
+                      orientation = 'bm'
+                    }, 
+                    func = 'set_button_pip'
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          n = G.UIT.R, 
+          config = {
+            align = "cm", 
+            minh = 1.2, -- originally 1.75 
+            minw = 1.5,
+            padding = 0.05, 
+            r = 0.1, 
+            hover = true, 
+            colour = G.C.ORANGE, 
+            button = "options", 
+            shadow = true
+          }, 
+          nodes = {
+            {
+              n = G.UIT.C, 
+              config = {
+                align = "cm", 
+                maxw = 1.4, 
+                focus_args = {
+                  button = 'start', 
+                  orientation = 'bm'
+                }, 
+                func = 'set_button_pip'
+              }, 
+              nodes = {
+                {
+                  n = G.UIT.T, 
+                  config = {
+                    text = localize('b_options'), 
+                    scale = scale, 
+                    colour = G.C.UI.TEXT_LIGHT, 
+                    shadow = true
+                  }
+                }
+              }
+            },
+          }
+        },
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/utils.lua"]'
+pattern = "-- TARGET: add your own CardAreas for joker evaluation"
+position = 'before'
+payload = '''
+if ALLOY and ALLOY.health_area then
+  table.insert(t, ALLOY.health_area)
+end
+'''
+match_indent = true
+times = 1

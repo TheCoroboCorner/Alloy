@@ -1,0 +1,18 @@
+{
+	"id": "Alloy",
+	"name": "Alloy",
+	"author": ["TheCoroboCorner"],
+	"description": "Tries to remaster the experience of the game with new mechanics and quality of life changes",
+	"prefix": "alloy",
+	"main_file": "Alloy.lua",
+	"dependencies": [
+		"Steamodded (>=1.0.0~ALPHA-1225a)"
+	],
+	"version": "1.0.0",
+	
+	"git_owner": "TheCoroboCorner",
+	"git_repo": "Alloy",
+	"mod_path": "Mods/Alloy",
+	"download_suffix": "Release.zip",
+	"allow_redistribution": true,
+}

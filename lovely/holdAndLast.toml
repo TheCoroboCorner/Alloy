@@ -1,0 +1,83 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# Hold and Play Last
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+local discard_button = {n=G.UIT.C, config={id = 'discard_button',align = "tm", padding = 0.3, r = 0.1, minw = 2.5, minh = button_height, hover = true, colour = G.C.RED, button = "discard_cards_from_highlighted", one_press = true, shadow = true, func = 'can_discard'}, nodes={
+'''
+position = "before"
+payload = '''
+local hold_button = {n=G.UIT.C, config={id = 'hold_button',align = "tm", padding = 0.3, r = 0.1, minw = 2.5, minh = button_height, hover = true, colour = G.C.GOLD, button = "toggle_hold", one_press = false, shadow = true, func = 'can_hold'}, nodes={
+    {n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
+        {n=G.UIT.T, config={ref_table = G.GAME, ref_value = "offhand_action", align = "cm", scale = text_scale, colour = G.C.UI.TEXT_LIGHT, focus_args = {button = 'z', orientation = 'bm'}, func = 'set_button_pip'}}
+    }}
+}}
+
+local last_button = {n=G.UIT.C, config={id = 'last_button',align = "tm", padding = 0.3, r = 0.1, minw = 2.5, minh = button_height, hover = true, colour = G.C.GREEN, button = "play_last_hand", one_press = true, shadow = true, func = 'can_play_last_hand'}, nodes={
+    {n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
+        {n=G.UIT.T, config={text = localize("b_last"), scale = text_scale, colour = G.C.UI.TEXT_LIGHT, focus_args = {button = 'w', orientation = 'bm'}, func = 'set_button_pip'}}
+    }}
+}}
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+G.SETTINGS.play_button_pos == 1 and discard_button or play_button,
+'''
+position = "before"
+payload = '''
+G.SETTINGS.play_button_pos == 1 and hold_button or last_button,
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+G.SETTINGS.play_button_pos == 1 and play_button or discard_button,
+'''
+position = "after"
+payload = '''
+G.SETTINGS.play_button_pos == 1 and last_button or hold_button
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''
+                G.FUNCS.draw_from_discard_to_deck()
+'''
+position = "before"
+payload = '''
+G.FUNCS.draw_from_hold_to_discard()
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''
+end
+
+G.FUNCS.discard_cards_from_highlighted = function(e, hook)
+'''
+position = "before"
+payload = '''
+ALLOY.current_hand_changed = true
+'''
+match_indent = true
+times = 1
