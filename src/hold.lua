@@ -52,7 +52,7 @@ ALLOY.start_holding = function(cards)
 		end
 	end
 	
-	SMODS.calculate_context({ card_sent_to_hold = true })
+	SMODS.calculate_context({ card_sent_to_hold = true, hand_sent_to_offhand = cards })
 	G.hand.config.card_limit = G.hand.config.card_limit - negative_count
 	G.GAME.offhand_count = (G.GAME.offhand_count or 0) + card_count
 	
@@ -72,7 +72,7 @@ ALLOY.stop_holding = function(cards)
 		G.hand:emplace(card)
 	end
 	
-	SMODS.calculate_context({ card_returned_from_hold = true })
+	SMODS.calculate_context({ card_returned_from_hold = true, hand_sent_from_offhand = cards })
 	G.hand.config.card_limit = G.hand.config.card_limit + negative_count
 	G.GAME.offhand_count = (G.GAME.offhand_count or 0) - card_count
 	
@@ -169,9 +169,21 @@ function Game:start_run(args)
 	self.offhand.states.visible = true
 	ALLOY.offhand = G.offhand
 	
-	-- Sets health to 100 on run start and add HP joker to hidden cardarea
+	-- Sets health to 100 on run start
 	
-	G.GAME.health = 100
+	G.GAME.health_min = G.GAME.health_min or ALLOY.default_health_min
+	G.GAME.health_max = G.GAME.health_max or ALLOY.default_health_max
+	G.GAME.health = G.GAME.health or ALLOY.starting_health
+	
+	-- Sets shield to 0 on run start
+	
+	G.GAME.shield_min = G.GAME.shield_min or ALLOY.default_shield_min
+	G.GAME.shield_max = G.GAME.shield_max or ALLOY.default_shield_max
+	G.GAME.shield = G.GAME.shield or ALLOY.starting_shield
+	
+	-- Set total HP to health + shield
+	
+	ALLOY.total_health = G.GAME.health + G.GAME.shield
 	
 	self.alloy_health_area = CardArea(
 		G.TILE_W - 600 * G.CARD_W - 200.95,

@@ -7,112 +7,6 @@ priority = 0
 [patches.pattern]
 target = "functions/UI_definitions.lua"
 pattern = '''
-    local spacing = 0.13
-    local temp_col = G.C.DYN_UI.BOSS_MAIN
-    local temp_col2 = G.C.DYN_UI.BOSS_DARK
-'''
-position = "before"
-payload = '''
-local bar_args = {}
-bar_args.colour = G.C.RED
-bar_args.bg_colour = G.C.CLEAR
-bar_args.label_scale = 0.5
-bar_args.label_padding = 0.1
-bar_args.label_minh = 0.65
-bar_args.label_minw = 1.1
-bar_args.label_vert = nil
-bar_args.label_position = "Top"
-bar_args.min = 0
-bar_args.max = 1
-bar_args.tooltip = nil
-
-bar_args.reverse_fill = false
-
-bar_args.bar_rotation = "Horizontal"
-bar_args.w = 1.10
-bar_args.h = 0.65
-bar_args.label_degree = 0
-
-bar_args.detailed_tooltip = nil
-
-bar_args.ref_table = G.GAME
-bar_args.ref_value = "health"
-
-local start_val = bar_args.w * ((G.GAME.health or 100) / 100 - bar_args.min) / (bar_args.max - bar_args.min)
-
-local health_bar = {
-  n = G.UIT.C,
-  config = {
-    align = "cm",
-    minw = bar_args.w,
-    minh = bar_args.h,
-    padding = bar_args.padding,
-    r = 0.1,
-    colour = G.C.CLEAR,
-    focus_args = {
-      type = 'slider'
-    }
-  },
-  nodes = {
-    {
-      n = G.UIT.C,
-      config = {
-        align = "cl",
-        minw = bar_args.w,
-        minh = bar_args.h,
-        r = 0.1,
-        colour = bar_args.bg_colour,
-        emboss = 0.05,
-        func = 'health_bar',
-        refresh_movement = true
-      },
-      nodes = {
-        {
-          n = G.UIT.B,
-          config = {
-            w = start_val,
-            h = bar_args.h,
-            colour = bar_args.colour,
-            ref_table = bar_args,
-            refresh_movement = true,
-            r = 0.1
-          },
-          nodes = {
-            {
-              n = G.UIT.O, 
-              config = {
-                id = 'health_UI_count',
-                object = DynaText({
-                  string = {
-                    {
-                      ref_table = G.GAME, 
-                      ref_value = 'health'
-                    }
-                  }, 
-                  font = G.LANGUAGES['en-us'].font,
-                  colours = {
-                    G.C.UI.TEXT_LIGHT
-                  },
-                  shadow = true, 
-                  rotate = true, 
-                  scale = scale
-                })
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-'''
-match_indent = true
-times = 1
-
-[[patches]]
-[patches.pattern]
-target = "functions/UI_definitions.lua"
-pattern = '''
           {n=G.UIT.R, config={id = 'run_info_button', align = "cm", minh = 1.75, minw = 1.5,padding = 0.05, r = 0.1, hover = true, colour = G.C.RED, button = "run_info", shadow = true}, nodes={
             {n=G.UIT.R, config={align = "cm", padding = 0, maxw = 1.4}, nodes={
               {n=G.UIT.T, config={text = localize('b_run_info_1'), scale = 1.2*scale, colour = G.C.UI.TEXT_LIGHT, shadow = true}}
@@ -169,11 +63,14 @@ payload = '''
                 {
                   n = G.UIT.R, 
                   config = {
+                    id = 'shield_UI_bar',
                     align = "cl", 
                     r = 0.1, 
                     minh = 0.75,
                     minw = 1.2, 
-                    colour = temp_col2
+                    colour = temp_col2,
+                    refresh_movement = true,
+                    func = 'update_shield'
                   }, 
                   nodes = {
                     {
@@ -203,8 +100,8 @@ payload = '''
                             object = DynaText({
                               string = {
                                 {
-                                  ref_table = G.GAME, 
-                                  ref_value = 'health'
+                                  ref_table = ALLOY, 
+                                  ref_value = 'total_health'
                                 }
                               }, 
                               font = G.LANGUAGES['en-us'].font, 
@@ -213,9 +110,13 @@ payload = '''
                               },
                               shadow = true, 
                               rotate = true, 
-                              scale = scale
+                              scale = scale,
+                              colours = { 
+                                G.C.UI.TEXT_LIGHT 
+                              }
                             }),
-                            id = 'health_UI_count'
+                            refresh_movement = true,
+                            id = 'health_UI_count',
                           }
                         }
                       }
