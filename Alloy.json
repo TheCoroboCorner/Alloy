@@ -1,7 +1,7 @@
 {
 	"id": "Alloy",
 	"name": "Alloy",
-	"author": ["TheCoroboCorner"],
+	"author": ["TheCoroboCorner", "ThunderEdge", "IncognitoN71"],
 	"description": "Tries to remaster the experience of the game with new mechanics and quality of life changes",
 	"prefix": "alloy",
 	"main_file": "Alloy.lua",
