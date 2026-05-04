@@ -57,14 +57,14 @@ SMODS.Sticker {
 	apply = function(self, card, val)
 		card.ability[self.key] = val
 		if card.ability[self.key] then
-			card.ability.explosive_fuse = G.GAME.cutil_vars.alloy_explosive_fuse_rounds
+			card.ability.explosive_fuse = G.GAME and G.GAME.cutil_vars and G.GAME.cutil_vars.alloy_explosive_fuse_rounds or CUTIL.get_variable("alloy_explosive_fuse_rounds")
 		end
 	end,
 	
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				card.ability.explosive_fuse or G.GAME.cutil_vars.alloy_explosive_fuse_rounds
+				card.ability.explosive_fuse or (G.GAME and G.GAME.cutil_vars and G.GAME.cutil_vars.alloy_explosive_fuse_rounds) or CUTIL.get_variable("alloy_explosive_fuse_rounds")
 			}
 		}
 	end,
