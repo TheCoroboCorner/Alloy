@@ -26,8 +26,8 @@ end
 local function get_all_hands()
 	if not G.GAME.last_hand_played then return nil end
 
-	raw_hands = get_combinations(G.hand.cards, G.hand.config.highlighted_limit)
-	refined_hands = {}
+	local raw_hands = get_combinations(G.hand.cards, G.hand.config.highlighted_limit)
+	local refined_hands = {}
 	
 	for _, hand in ipairs(raw_hands) do
 		if next(evaluate_poker_hand(hand)[G.GAME.last_hand_played]) then
@@ -135,7 +135,7 @@ G.FUNCS.can_hold = function(e)
 end
 
 G.FUNCS.draw_from_hold_to_discard = function(e)
-	local hold_count = #ALLOY.offhand
+	local hold_count = #ALLOY.offhand.cards
 	local it = 1
 	
 	for k, v in ipairs(ALLOY.offhand.cards) do
@@ -169,21 +169,14 @@ function Game:start_run(args)
 	self.offhand.states.visible = true
 	ALLOY.offhand = G.offhand
 	
-	-- Sets health to 100 on run start
-	
-	G.GAME.health_min = G.GAME.health_min or ALLOY.default_health_min
-	G.GAME.health_max = G.GAME.health_max or ALLOY.default_health_max
-	G.GAME.health = G.GAME.health or ALLOY.starting_health
-	
-	-- Sets shield to 0 on run start
-	
-	G.GAME.shield_min = G.GAME.shield_min or ALLOY.default_shield_min
-	G.GAME.shield_max = G.GAME.shield_max or ALLOY.default_shield_max
-	G.GAME.shield = G.GAME.shield or ALLOY.starting_shield
+	CUTIL.ensure_variable_integrity()
+	CUTIL.update_game_variables()
 	
 	-- Set total HP to health + shield
 	
-	ALLOY.total_health = G.GAME.health + G.GAME.shield
+	ALLOY.total_health = G.GAME.cutil_vars.alloy_health + G.GAME.cutil_vars.alloy_shield
+	
+	-- Establishes health_area cardarea
 	
 	self.alloy_health_area = CardArea(
 		G.TILE_W - 600 * G.CARD_W - 200.95,

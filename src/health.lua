@@ -21,6 +21,15 @@ local function inverse_lerp(a, b, val)
 	return (val - a) / (b - a)
 end
 
+local function check_if_dead()
+	local lowest_possible_health = G.GAME.cutil_vars.alloy_health_min + G.GAME.cutil_vars.alloy_shield_min
+	ALLOY.total_health = G.GAME.cutil_vars.alloy_health + G.GAME.cutil_vars.alloy_shield
+	
+	if lowest_possible_health >= ALLOY.total_health then
+		ALLOY.game_end()
+	end
+end	
+
 SMODS.Joker {
 	key = "health_object",
 	order = 0,
@@ -44,36 +53,27 @@ SMODS.Joker {
 		
 		local percent_decimal_conversion = 100
 		
-		local normal_min_health = 0
-		G.GAME.health_min = G.GAME.health_min or normal_min_health
+		local normal_min_health = G.GAME.cutil_vars.alloy_health_min
 		
-		local health_as_percentage = G.GAME.health / percent_decimal_conversion
-		local shield_as_percentage = G.GAME.shield / percent_decimal_conversion
+		local health_as_percentage = G.GAME.cutil_vars.alloy_health / percent_decimal_conversion
+		local shield_as_percentage = G.GAME.cutil_vars.alloy_shield / percent_decimal_conversion
 		local blind_completion_as_percentage = to_number(current_score / target_score)
 		local blind_remaining_as_percentage = 1 - blind_completion_as_percentage
 		
 		if context.end_of_round and not context.game_over and context.main_eval then 
 			if blind_completion_as_percentage >= 1 and G.GAME.current_round.hands_played == 1 then
-				local shield_bonus = 5
+				local shield_bonus = G.GAME.cutil_vars.alloy_shield_bonus
 				ALLOY.ease_shield(shield_bonus)
+				
+				SMODS.calculate_context({ shield_boost = true })
 			end
 		end
+		
 		if context.end_of_round and context.game_over and context.main_eval then
-			if health_as_percentage + G.GAME.health_min + shield_as_percentage - (G.GAME.health_min or 0) >= blind_remaining_as_percentage then
+			if health_as_percentage + shield_as_percentage >= blind_remaining_as_percentage then
 				local damage = -math.ceil(blind_remaining_as_percentage * percent_decimal_conversion)
 				
-				local used_shield = false
-				if G.GAME.shield > G.GAME.shield_min then
-					used_shield = true
-					local delta_shield = clamp(G.GAME.shield_min, G.GAME.shield_max, G.GAME.shield + damage) - G.GAME.shield
-					
-					ALLOY.ease_shield(damage)
-					damage = damage - delta_shield
-				end
-				
-				if damage < 0 then
-					ALLOY.ease_health(damage, used_shield)
-				end
+				ALLOY.ease_damage(damage)
 				
 				SMODS.calculate_context({ survived_death = true })
 				
@@ -83,11 +83,13 @@ SMODS.Joker {
 					colour = G.C.RED
 				}
 			else
-				G.GAME.health = 0
+				G.GAME.cutil_vars.alloy_health = 0
 				
 				SMODS.calculate_context({ survived_death = false })
 			end
 		end
+		
+		check_if_dead()
 	end
 }
 
@@ -98,18 +100,37 @@ local function update_health_colour()
 	local health_normal = { G.C.UI.TEXT_LIGHT }
 	local health_shielded = { ALLOY.shield_colour_white }
 	
-	local normal_min_health = 0
-	local normal_max_health = 100
-	G.GAME.health_max = G.GAME.health_max or normal_max_health
+	local normal_min_health = CUTIL.get_variable("alloy_health_min")
+	local normal_max_health = CUTIL.get_variable("alloy_health_max")
 	
-	ALLOY.total_health = G.GAME.health + G.GAME.shield
+	ALLOY.total_health = G.GAME.cutil_vars.alloy_health + G.GAME.cutil_vars.alloy_shield
 	if ALLOY.total_health < normal_min_health then
 		health_text_UI.config.object.colours = health_negative
-	elseif ALLOY.total_health > G.GAME.health_max then
+	elseif G.GAME.cutil_vars.alloy_shield > 0 then
 		health_text_UI.config.object.colours = health_shielded
 	else
 		health_text_UI.config.object.colours = health_normal
 	end
+end
+
+ALLOY.ease_damage = function(delta_damage, silent)
+	local shield_remaining = G.GAME.cutil_vars.alloy_shield + delta_damage
+	
+	local health_remaining = G.GAME.cutil_vars.alloy_health
+	local shield_underflow = false
+	if shield_remaining < 0 then
+		health_remaining = health_remaining + shield_remaining
+		shield_remaining = 0
+		shield_underflow = true
+	end
+	
+	if shield_remaining ~= G.GAME.cutil_vars.alloy_shield then
+		local delta_shield = shield_remaining - G.GAME.cutil_vars.alloy_shield
+		ALLOY.ease_shield(delta_shield, true)
+	end
+	
+	local delta_health = health_remaining - G.GAME.cutil_vars.alloy_health
+	ALLOY.ease_health(delta_health, not shield_underflow)
 end
 
 ALLOY.ease_health = function(delta_health, silent)
@@ -118,14 +139,12 @@ ALLOY.ease_health = function(delta_health, silent)
 	delta_health = delta_health or 0
 	silent = silent or false
 	
-	local normal_min_health = 0
-	local normal_max_health = 100
-	G.GAME.health_min = G.GAME.health_min or normal_min_health
-	G.GAME.health_max = G.GAME.health_max or normal_max_health
+	local normal_min_health = G.GAME.cutil_vars.alloy_health_min
+	local normal_max_health = G.GAME.cutil_vars.alloy_health_max
 	
-	delta_health = clamp(G.GAME.health_min, G.GAME.health_max, G.GAME.health + delta_health) - G.GAME.health
+	delta_health = clamp(G.GAME.cutil_vars.alloy_health_min, G.GAME.cutil_vars.alloy_health_max, G.GAME.cutil_vars.alloy_health + delta_health) - G.GAME.cutil_vars.alloy_health
 
-	G.GAME.health = G.GAME.health + delta_health
+	CUTIL.set_variable("alloy_health", G.GAME.cutil_vars.alloy_health + delta_health)
 	update_health_colour()
 	
 	SMODS.calculate_context({ health_changed = delta_health })
@@ -157,17 +176,15 @@ ALLOY.ease_shield = function(delta_shield, silent)
 	local delta_shield = delta_shield or 0
 	silent = silent or false
 
-	local normal_min_shield = 0
-	local normal_max_shield = 50
-	G.GAME.shield_min = G.GAME.shield_min or normal_min_shield
-	G.GAME.shield_max = G.GAME.shield_max or normal_max_shield
+	local normal_min_shield = G.GAME.cutil_vars.alloy_shield_min
+	local normal_max_shield = G.GAME.cutil_vars.alloy_shield_max
 	
 	delta_shield = delta_shield or 0
-	delta_shield = clamp(G.GAME.shield_min, G.GAME.shield_max, G.GAME.shield + delta_shield) - G.GAME.shield
+	delta_shield = clamp(G.GAME.cutil_vars.alloy_shield_min, G.GAME.cutil_vars.alloy_shield_max, G.GAME.cutil_vars.alloy_shield + delta_shield) - G.GAME.cutil_vars.alloy_shield
 	
 	if delta_shield == 0 then return end
 	
-	G.GAME.shield = G.GAME.shield + delta_shield
+	CUTIL.set_variable("alloy_shield", G.GAME.cutil_vars.alloy_shield + delta_shield)
 	update_health_colour()
 	
 	SMODS.calculate_context({ shield_changed = delta_shield })
@@ -192,32 +209,30 @@ ALLOY.ease_shield = function(delta_shield, silent)
 end
 
 G.FUNCS.update_health = function(e)
-	if not G.GAME.health then return end
+	if not G.GAME.cutil_vars.alloy_health then return end
 	
-	local normal_min_health = 0
-	local normal_max_health = 100
-	G.GAME.health_min = G.GAME.health_min or normal_min_health
-	G.GAME.health_max = G.GAME.health_max or normal_max_health
+	local normal_min_health = G.GAME.cutil_vars.alloy_health_min
+	local normal_max_health = G.GAME.cutil_vars.alloy_health_max
 	
-	local percent_factor = 100
+	local percent_factor = G.GAME.cutil_vars.alloy_health_max - G.GAME.cutil_vars.alloy_health_min
 	
 	local health_negative = G.C.SUITS.Spades
 	local health_normal = G.C.RED
 	local health_bonus = G.C.MONEY
 	local health_shielded = G.C.CHIPS
 	
-	if G.GAME.health > normal_max_health then
+	if G.GAME.cutil_vars.alloy_health > normal_max_health then
 		e.config.colour = health_bonus
-	elseif G.GAME.health < normal_min_health then
+	elseif G.GAME.cutil_vars.alloy_health < normal_min_health then
 		e.config.colour = health_negative
-	elseif ALLOY.total_health > G.GAME.health_max then
+	elseif G.GAME.cutil_vars.alloy_shield > 0 then
 		e.config.colour = health_shielded
 	else
 		e.config.colour = health_normal
 	end
 	
-	local clamped_health = (G.GAME.health >= normal_min_health) and clamp(normal_min_health, normal_max_health, G.GAME.health) 
-						    or clamp(G.GAME.health_min, normal_min_health, G.GAME.health) - G.GAME.health_min
+	local clamped_health = (G.GAME.cutil_vars.alloy_health >= normal_min_health) and clamp(normal_min_health, normal_max_health, G.GAME.cutil_vars.alloy_health) 
+						    or clamp(G.GAME.cutil_vars.alloy_health_min, normal_min_health, G.GAME.cutil_vars.alloy_health) - G.GAME.cutil_vars.alloy_health_min
 	
 	local width = clamped_health / percent_factor * e.config.maxw
 	
@@ -227,12 +242,10 @@ G.FUNCS.update_health = function(e)
 end
 
 G.FUNCS.update_shield = function(e)
-	if not G.GAME.shield then return end
-	
-	local normal_min_shield = 0
-	local normal_max_shield = 25
-	G.GAME.shield_min = G.GAME.shield_min or normal_min_shield
-	G.GAME.shield_max = G.GAME.shield_max or normal_max_shield
+	if not G.GAME.cutil_vars.alloy_shield then return end
+
+	local normal_min_shield = G.GAME.cutil_vars.alloy_shield_min
+	local normal_max_shield = G.GAME.cutil_vars.alloy_shield_max
 	
 	local percent_factor = 100
 	
@@ -242,7 +255,7 @@ G.FUNCS.update_shield = function(e)
 	local shield_colour = colour_lerp(ALLOY.shield_colour_dull, ALLOY.shield_colour_bright, shield_colour_pulse_effect)
 	local no_shield_colour = G.C.DYN_UI.BOSS_DARK
 	
-	local t = inverse_lerp(G.GAME.shield_min, G.GAME.shield_max, G.GAME.shield)
+	local t = inverse_lerp(G.GAME.cutil_vars.alloy_shield_min, G.GAME.cutil_vars.alloy_shield_max, G.GAME.cutil_vars.alloy_shield)
 	e.config.colour = colour_lerp(no_shield_colour, shield_colour, t)
 end
 
