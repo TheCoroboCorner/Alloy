@@ -75,6 +75,7 @@ ALLOY.game_end = function(win)
 	end
 end
 
+assert(SMODS.load_file("src/atlases.lua"))()
 assert(SMODS.load_file("src/hold.lua"))()
 assert(SMODS.load_file("src/lock.lua"))()
 assert(SMODS.load_file("src/health.lua"))()

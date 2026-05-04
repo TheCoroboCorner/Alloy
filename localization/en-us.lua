@@ -96,7 +96,87 @@ return {
 					"{C:red}destroys{} all adjacent Jokers,",
 					"{C:attention}ignores Eternal"
 				}
-			}
+			},
+			alloy_blood_sticker = {
+				name = "Blood Sticker",
+                text = {
+                    "Used this Joker",
+                    "to win on {C:attention}Blood",
+                    "{C:attention}Stake{} difficulty",
+                },
+			},
+			alloy_tall_sticker = {
+				name = "Tall Sticker",
+                text = {
+                    "Used this Joker",
+                    "to win on {C:attention}Tall",
+                    "{C:attention}Stake{} difficulty",
+                },
+			},
+			alloy_wood_sticker = {
+				name = "Wood Sticker",
+                text = {
+                    "Used this Joker",
+                    "to win on {C:attention}Wood",
+                    "{C:attention}Stake{} difficulty",
+                },
+			},
+			alloy_jammed_sticker = {
+				name = "Jammed Sticker",
+                text = {
+                    "Used this Joker",
+                    "to win on {C:attention}Jammed",
+                    "{C:attention}Stake{} difficulty",
+                },
+			},
+			alloy_mountain_sticker = {
+				name = "Mountain Sticker",
+                text = {
+                    "Used this Joker",
+                    "to win on {C:attention}Mountain",
+                    "{C:attention}Stake{} difficulty",
+                },
+			},
+			alloy_unstable_sticker = {
+				name = "Unstable Sticker",
+                text = {
+                    "Used this Joker",
+                    "to win on {C:attention}Unstable",
+                    "{C:attention}Stake{} difficulty",
+                },
+			},
+			alloy_platinum_sticker = {
+				name = "Platinum Sticker",
+                text = {
+                    "Used this Joker",
+                    "to win on {C:attention}Platinum",
+                    "{C:attention}Stake{} difficulty",
+                },
+			},
+			alloy_warrior_sticker = {
+				name = "Warrior Sticker",
+                text = {
+                    "Used this Joker",
+                    "to win on {C:attention}Warrior",
+                    "{C:attention}Stake{} difficulty",
+                },
+			},
+			alloy_champion_sticker = {
+				name = "Champion Sticker",
+                text = {
+                    "Used this Joker",
+                    "to win on {C:attention}Champion",
+                    "{C:attention}Stake{} difficulty",
+                },
+			},
+			alloy_legend_sticker = {
+				name = "Legend Sticker",
+                text = {
+                    "Used this Joker",
+                    "to win on {C:attention}Legend",
+                    "{C:attention}Stake{} difficulty",
+                },
+			},
 		}
 	},
 	misc = {

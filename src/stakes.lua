@@ -11,17 +11,20 @@ SMODS.Stake {
 	unlocked = ALLOY.debug.unlock_all_stakes,
 	unlocked_stake = "tall",
 	applied_stakes = { "gold" },
+	prefix_config = { applied_stakes = { mod = false } },
 	
+	atlas = "alloy_stakes",
 	pos = {
+		x = 0,
+		y = 0
+	},
+	sticker_atlas = "alloy_stickers",
+	sticker_pos = {
 		x = 0,
 		y = 1
 	},
-	sticker_pos = {
-		x = 3,
-		y = 1
-	},
-	shiny = true,
-	
+
+
 	modifiers = function()
 		G.GAME.blood_stake_active = true
 	end,
@@ -38,16 +41,18 @@ SMODS.Stake {
 	unlocked_stake = "wood",
 	applied_stakes = { "blood" },
 	
+	atlas = "alloy_stakes",
 	pos = {
-		x = 0,
-		y = 1
+		x = 1,
+		y = 0
 	},
+	sticker_atlas = "alloy_stickers",
 	sticker_pos = {
-		x = 3,
+		x = 1,
 		y = 1
 	},
-	shiny = true,
-	
+
+
 	modifiers = function()
 		G.GAME.tall_stake_active = true
 		G.GAME.modifiers.scaling = (G.GAME.modifiers.scaling or 1) + 1
@@ -65,16 +70,18 @@ SMODS.Stake {
 	unlocked_stake = "jammed",
 	applied_stakes = { "tall" },
 	
+	atlas = "alloy_stakes",
 	pos = {
-		x = 0,
-		y = 1
+		x = 2,
+		y = 0
 	},
+	sticker_atlas = "alloy_stickers",
 	sticker_pos = {
-		x = 3,
+		x = 2,
 		y = 1
 	},
-	shiny = true,
-	
+
+
 	modifiers = function()
 		-- 30% chance for Jokers in shops or booster packs to have a Vampire sticker (take 1 health of damage per round, ignores shield)
 		G.GAME.wood_stake_active = true
@@ -93,16 +100,17 @@ SMODS.Stake {
 	unlocked_stake = "mountain",
 	applied_stakes = { "wood" },
 	
+	atlas = "alloy_stakes",
 	pos = {
-		x = 0,
-		y = 1
+		x = 3,
+		y = 0
 	},
+	sticker_atlas = "alloy_stickers",
 	sticker_pos = {
 		x = 3,
 		y = 1
 	},
-	shiny = true,
-	
+
 	modifiers = function()
 		G.GAME.jammed_stake_active = true
 		G.GAME.starting_params.hands = G.GAME.starting_params.hands - 1
@@ -120,16 +128,17 @@ SMODS.Stake {
 	unlocked_stake = "unstable",
 	applied_stakes = { "jammed" },
 	
+	atlas = "alloy_stakes",
 	pos = {
-		x = 0,
-		y = 1
+		x = 4,
+		y = 0
 	},
+	sticker_atlas = "alloy_stickers",
 	sticker_pos = {
-		x = 3,
+		x = 4,
 		y = 1
 	},
-	shiny = true,
-	
+
 	modifiers = function()
 		G.GAME.mountain_stake_active = true
 		G.GAME.modifiers.scaling = (G.GAME.modifiers.scaling or 1) + 1
@@ -147,16 +156,17 @@ SMODS.Stake {
 	unlocked_stake = "platinum",
 	applied_stakes = { "mountain" },
 	
+	atlas = "alloy_stakes",
 	pos = {
 		x = 0,
 		y = 1
 	},
+	sticker_atlas = "alloy_stickers",
 	sticker_pos = {
-		x = 3,
-		y = 1
+		x = 0,
+		y = 2
 	},
-	shiny = true,
-	
+
 	modifiers = function()
 		-- 30% chance for Jokers in shops or booster packs to have an Explosive sticker (explodes in 6 rounds and takes out all adjacent Jokers with it, ignoring Eternal)
 		G.GAME.unstable_stake_active = true
@@ -177,16 +187,17 @@ SMODS.Stake {
 	unlocked_stake = "warrior",
 	applied_stakes = { "unstable" },
 	
+	atlas = "alloy_stakes",
 	pos = {
-		x = 0,
+		x = 1,
 		y = 1
 	},
+	sticker_atlas = "alloy_stickers",
 	sticker_pos = {
-		x = 3,
-		y = 1
+		x = 1,
+		y = 2
 	},
-	shiny = true,
-	
+
 	modifiers = function()
 		G.GAME.platinum_stake_active = true
 	end,
@@ -205,16 +216,17 @@ SMODS.Stake {
 	unlocked_stake = "champion",
 	applied_stakes = { "platinum" },
 	
+	atlas = "alloy_stakes",
 	pos = {
-		x = 0,
+		x = 2,
 		y = 1
 	},
+	sticker_atlas = "alloy_stickers",
 	sticker_pos = {
-		x = 3,
-		y = 1
+		x = 2,
+		y = 2
 	},
-	shiny = true,
-	
+
 	modifiers = function()
 		G.GAME.warrior_stake_active = true
 	end,
@@ -231,16 +243,17 @@ SMODS.Stake {
 	unlocked_stake = "legend",
 	applied_stakes = { "warrior" },
 	
+	atlas = "alloy_stakes",
 	pos = {
-		x = 0,
-		y = 1
-	},
-	sticker_pos = {
 		x = 3,
 		y = 1
 	},
-	shiny = true,
-	
+	sticker_atlas = "alloy_stickers",
+	sticker_pos = {
+		x = 3,
+		y = 2
+	},
+
 	modifiers = function()
 		G.GAME.champion_stake_active = true
 		G.GAME.modifiers.scaling = (G.GAME.modifiers.scaling or 1) + 2
@@ -266,7 +279,9 @@ SMODS.Stake {
 		y = 1
 	},
 	shiny = true,
-	
+
+	shiny = true,
+
 	modifiers = function()
 		G.GAME.legend_stake_active = true
 		G.GAME.win_ante = G.GAME.win_ante + 4
