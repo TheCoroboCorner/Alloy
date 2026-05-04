@@ -6,7 +6,8 @@
 	"prefix": "alloy",
 	"main_file": "Alloy.lua",
 	"dependencies": [
-		"Steamodded (>=1.0.0~ALPHA-1225a)"
+		"Steamodded (>=1.0.0~ALPHA-1225a)",
+		"CoroboUtils (>=1.1.1)",
 	],
 	"version": "1.0.1",
 	
