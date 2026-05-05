@@ -273,6 +273,7 @@ SMODS.Stake {
 		x = 3,
 		y = 2
 	},
+	shiny = true,
 
 	modifiers = function()
 		G.GAME.champion_stake_active = true
@@ -290,16 +291,16 @@ SMODS.Stake {
 	unlocked = ALLOY.debug.unlock_all_stakes,
 	applied_stakes = { "champion" },
 	
+	atlas = "alloy_stakes",
 	pos = {
-		x = 2,
+		x = 4,
 		y = 1
 	},
+	sticker_atlas = "alloy_stickers",
 	sticker_pos = {
-		x = 3,
-		y = 1
+		x = 4,
+		y = 2
 	},
-	shiny = true,
-
 	shiny = true,
 
 	modifiers = function()
