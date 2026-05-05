@@ -169,8 +169,8 @@ function Game:start_run(args)
 	self.offhand.states.visible = true
 	ALLOY.offhand = G.offhand
 	
-	CUTIL.ensure_variable_integrity()
 	CUTIL.update_game_variables()
+	CUTIL.ensure_variable_integrity()
 	
 	-- Set total HP to health + shield
 	

@@ -1,8 +1,25 @@
-CUTIL.register_modifier_type("blood_stake_health_max", function(health_max, params) return G.GAME.blood_stake_active and (health_max - params.penalty) or health_max end)
-CUTIL.register_modifier_type("blood_stake_starting_health", function(starting_health, params) return G.GAME.blood_stake_active and (starting_health - params.penalty) or starting_health end)
+local function apply_blood_stake_health_max(health_max, params)
+	return G.GAME.blood_stake_active and (health_max - params.penalty) or health_max
+end
 
-CUTIL.add_modifier("alloy_health_max", "blood_stake_health_max", { penalty = 50 })
-CUTIL.add_modifier("alloy_starting_health", "blood_stake_starting_health", { penalty = 50 })
+local function apply_blood_stake_starting_health(starting_health, params)
+	return G.GAME.blood_stake_active and (starting_health - params.penalty) or starting_health
+end
+
+local function apply_platinum_stake_dot(self, card, context)
+	if G.GAME.platinum_stake_active then
+		ALLOY.ease_damage(-5)
+	end
+end
+
+local function apply_warrior_stake_damage_on_skip(self, card, context)
+	if G.GAME.warrior_stake_active then
+		ALLOY.ease_damage(-10)
+	end
+end
+
+CUTIL.register_modifier_type("blood_stake_health_max", apply_blood_stake_health_max)
+CUTIL.register_modifier_type("blood_stake_starting_health", apply_blood_stake_starting_health)
 
 SMODS.Stake {
 	name = "Blood Stake",
@@ -27,6 +44,9 @@ SMODS.Stake {
 
 	modifiers = function()
 		G.GAME.blood_stake_active = true
+		
+		CUTIL.add_modifier("alloy_health_max", "blood_stake_health_max", { penalty = 50 }, 1)
+		CUTIL.add_modifier("alloy_starting_health", "blood_stake_starting_health", { penalty = 50 }, 1)
 	end,
 	
 	colour = G.C.SUITS.Hearts,
@@ -177,8 +197,6 @@ SMODS.Stake {
 	loc_txt = {}
 }
 
-CUTIL.Events.add("Alloy", "platinum_stake", function(...) if G.GAME.platinum_stake_active then ALLOY.ease_damage(-5) end end, { filter = { "end_of_round", "main_eval" } })
-
 SMODS.Stake {
 	name = "Platinum Stake",
 	key = "platinum",
@@ -200,13 +218,13 @@ SMODS.Stake {
 
 	modifiers = function()
 		G.GAME.platinum_stake_active = true
+		
+		CUTIL.Events.add("Alloy", "platinum_stake", apply_platinum_stake_dot, { filter = { "end_of_round" } })
 	end,
 	
 	colour = G.C.SECONDARY_SET.Enhanced,
 	loc_txt = {}
 }
-
-CUTIL.Events.add("Alloy", "warrior_stake", function(...) if G.GAME.warrior_stake_active then ALLOY.ease_damage(-10) end end, { filter = { "skip_blind", "main_eval" } })
 
 SMODS.Stake {
 	name = "Warrior Stake",
@@ -229,6 +247,8 @@ SMODS.Stake {
 
 	modifiers = function()
 		G.GAME.warrior_stake_active = true
+		
+		CUTIL.Events.add("Alloy", "warrior_stake", apply_warrior_stake_damage_on_skip, { filter = { "skip_blind" } })
 	end,
 	
 	colour = G.C.MULT,
@@ -253,7 +273,6 @@ SMODS.Stake {
 		x = 3,
 		y = 2
 	},
-	shiny = true,
 
 	modifiers = function()
 		G.GAME.champion_stake_active = true
@@ -271,16 +290,16 @@ SMODS.Stake {
 	unlocked = ALLOY.debug.unlock_all_stakes,
 	applied_stakes = { "champion" },
 	
-	atlas = "alloy_stakes",
 	pos = {
-		x = 4,
+		x = 2,
 		y = 1
 	},
-	sticker_atlas = "alloy_stickers",
 	sticker_pos = {
-		x = 4,
-		y = 2
+		x = 3,
+		y = 1
 	},
+	shiny = true,
+
 	shiny = true,
 
 	modifiers = function()
