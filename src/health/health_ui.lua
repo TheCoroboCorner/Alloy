@@ -1,7 +1,7 @@
 function ALLOY.update_health_colour()
-	local health_text_UI = G.HUD:get_UIE_by_ID('health_UI_count')
+	ALLOY.total_health_value = ALLOY.total_health() or 100
 	
-	ALLOY.total_health_value = ALLOY.total_health()
+	local health_text_UI = G.HUD:get_UIE_by_ID('health_UI_count')
 	
 	local usual_min_health = 0
 	local usual_max_health = 100
