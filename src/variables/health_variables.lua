@@ -29,6 +29,8 @@ CUTIL.add_variable("alloy_starting_shield", 0)
 CUTIL.add_variable("alloy_shield_min", 0)
 CUTIL.add_variable("alloy_shield_max", 25)
 
+CUTIL.add_variable("alloy_shield_bonus", 5)
+
 -- Functions
 
 function ALLOY.min_health()
