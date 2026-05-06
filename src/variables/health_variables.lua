@@ -47,6 +47,8 @@ function ALLOY.total_health()
 	return hp + sh
 end
 
+ALLOY.total_health_value = ALLOY.total_health()
+
 function ALLOY.max_health()
 	local hp_max = get_var("alloy_health_max")
 	local sh_max = get_var("alloy_shield_max")
