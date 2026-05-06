@@ -1,0 +1,17 @@
+local calculate_context = SMODS.calculate_context
+function SMODS.calculate_context(context, return_table)
+	if ALLOY.health_area and not ALLOY.health_area.cards then return {} end
+	
+	return calculate_context(context, return_table)
+end
+
+local game_start_run = Game.start_run
+function Game:start_run(args)
+	local ret = game_start_run(self, args)
+	
+	ALLOY.init_hold()
+	ALLOY.init_health_cardarea()
+	
+	return ret
+end
+	

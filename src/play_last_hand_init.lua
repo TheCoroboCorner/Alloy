@@ -1,0 +1,1 @@
+assert(SMODS.load_file("src/play_last_hand/play_last_hand_funcs.lua"))()
