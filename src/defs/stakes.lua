@@ -106,7 +106,6 @@ SMODS.Stake {
 	modifiers = function()
 		-- 30% chance for Jokers in shops or booster packs to have a Vampire sticker (take 1 health of damage per round, ignores shield)
 		G.GAME.wood_stake_active = true
-		G.GAME.modifiers.enable_vampire = true
 	end,
 	
 	colour = G.C.UI.TEXT_DARK,
@@ -191,7 +190,6 @@ SMODS.Stake {
 	modifiers = function()
 		-- 30% chance for Jokers in shops or booster packs to have an Explosive sticker (explodes in 6 rounds and takes out all adjacent Jokers with it, ignoring Eternal)
 		G.GAME.unstable_stake_active = true
-		G.GAME.modifiers.enable_explosive = true
 	end,
 	
 	colour = G.C.GREEN,
