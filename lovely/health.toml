@@ -101,7 +101,7 @@ payload = '''
                               string = {
                                 {
                                   ref_table = ALLOY, 
-                                  ref_value = 'total_health'
+                                  ref_value = 'total_health_value'
                                 }
                               }, 
                               font = G.LANGUAGES['en-us'].font, 
