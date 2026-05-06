@@ -11,8 +11,8 @@ ALLOY.shield_colour_white = HEX('99EEFF')
 -- ALLOY.actions = {}
 -- ALLOY.debug = {}
 
-CUTIL.add_variable("alloy_health", nil)
-CUTIL.add_variable("alloy_shield", nil)
+CUTIL.add_variable("alloy_health", 100)
+CUTIL.add_variable("alloy_shield", 0)
 
 -- default.health_min is the lowest value HP can be before game over triggers
 --ALLOY.default.health_min = 0
@@ -76,8 +76,10 @@ ALLOY.game_end = function(win)
 end
 
 ALLOY.reset_game_globals = function(run_start)
-	CUTIL.set_variable("alloy_health", G.GAME and G.GAME.cutil_vars and G.GAME.cutil_vars.alloy_starting_health or CUTIL.get_variable("alloy_starting_health"))
-	CUTIL.set_variable("alloy_shield", G.GAME and G.GAME.cutil_vars and G.GAME.cutil_vars.alloy_starting_shield or CUTIL.get_variable("alloy_starting_shield"))
+	if run_start then
+		CUTIL.set_variable("alloy_health", G.GAME and G.GAME.cutil_vars and G.GAME.cutil_vars.alloy_starting_health or CUTIL.get_variable("alloy_starting_health"))
+		CUTIL.set_variable("alloy_shield", G.GAME and G.GAME.cutil_vars and G.GAME.cutil_vars.alloy_starting_shield or CUTIL.get_variable("alloy_starting_shield"))
+	end
 end
 
 assert(SMODS.load_file("src/atlases.lua"))()
