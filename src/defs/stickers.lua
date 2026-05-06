@@ -1,7 +1,7 @@
 SMODS.Sticker {
 	key = "vampire",
 	badge_colour = HEX('911911'), -- heh
-	needs_enable_flag = true,
+	needs_enable_flag = false,
 	rate = 0.3,
 	
 	sets = {
@@ -15,20 +15,20 @@ SMODS.Sticker {
 	},
 	
 	should_apply = function(self, card, center, area, bypass_roll)
-		return G.GAME.modifiers.enable_vampire and SMODS.Sticker.should_apply(self, card, center, area, bypass_roll)
+		return SMODS.Sticker.should_apply(self, card, center, area, bypass_roll) and G.GAME.blood_stake_active
 	end,
 	
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				-1 * (-1) -- -1 * vampire_damage; there's no ability table so I have nowhere to put it
+				get_var("alloy_vampire_sticker_damage") * (-1) -- -1 * vampire_damage; there's no ability table so I have nowhere to put it
 			}
 		}
 	end,
 	
 	calculate = function(self, card, context)
 		if context.end_of_round and context.main_eval then
-			local vampire_damage = -1
+			local vampire_damage = get_var("alloy_vampire_sticker_damage")
 			ALLOY.ease_health(vampire_damage)
 		end
 	end
@@ -37,7 +37,7 @@ SMODS.Sticker {
 SMODS.Sticker {
 	key = "explosive",
 	badge_colour = HEX('524D4D'),
-	needs_enable_flag = true,
+	needs_enable_flag = false,
 	rate = 0.3,
 	
 	sets = {
@@ -51,7 +51,7 @@ SMODS.Sticker {
 	},
 	
 	should_apply = function(self, card, center, area, bypass_roll)
-		return G.GAME.modifiers.enable_explosive and SMODS.Sticker.should_apply(self, card, center, area, bypass_roll)
+		return SMODS.Sticker.should_apply(self, card, center, area, bypass_roll) and G.GAME.unstable_stake_active
 	end,
 	
 	apply = function(self, card, val)
