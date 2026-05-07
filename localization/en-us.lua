@@ -1,5 +1,25 @@
 return {
 	descriptions = {
+		Joker = {
+			j_alloy_cowardly_joker = {
+				name = "Cowardly Joker",
+				text = {
+					"Gives more {C:chips}Chips{} the more",
+					"{C:uncommon}HP{} you have",
+					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)"
+					
+				}
+			},
+			j_alloy_brave_joker = {
+				name = "Brave Joker",
+				text = {
+					"Gives more {C:mult}Mult{} the less",
+					"{C:uncommon}HP{} you have",
+					"{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)"
+					
+				}
+			},
+		},
 		Stake = {
 			stake_alloy_blood = {
 				name = "Blood Stake",
