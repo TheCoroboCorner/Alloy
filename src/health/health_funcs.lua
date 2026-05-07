@@ -1,4 +1,4 @@
-ALLOY.ease_health = function(delta_health, silent)
+ALLOY.ease_health = function(delta_health, silent, ignore_limits)
 	debug_log("Easing health")
 	
 	local health_text_UI = G.HUD:get_UIE_by_ID('health_UI_count')
@@ -10,7 +10,7 @@ ALLOY.ease_health = function(delta_health, silent)
 	local min_health = get_var("alloy_health_min")
 	local max_health = get_var("alloy_health_max")
 	
-	local legal_health = CUTIL.clamp(health + delta_health, min_health, max_health)
+	local legal_health = ignore_limits and (health + delta_health) or CUTIL.clamp(health + delta_health, min_health, max_health)
 	local legal_delta = legal_health - health
 	
 	debug_log("health + delta_health: " .. health + delta_health)
@@ -35,7 +35,7 @@ ALLOY.ease_health = function(delta_health, silent)
 		end
 		
 		attention_text({
-			text = text .. tostring(legal_delta),
+			text = text .. legal_delta and tostring(legal_delta) or "Error",
 			scale = 0.8,
 			hold = 0.7,
 			cover = health_text_UI.parent,
@@ -47,7 +47,7 @@ ALLOY.ease_health = function(delta_health, silent)
 	end
 end
 
-ALLOY.ease_shield = function(delta_shield, silent)
+ALLOY.ease_shield = function(delta_shield, silent, ignore_limits)
 	debug_log("Easing shields")
 
 	local shield_UI = G.HUD:get_UIE_by_ID('shield_UI_bar')
@@ -59,7 +59,7 @@ ALLOY.ease_shield = function(delta_shield, silent)
 	local min_shield = get_var("alloy_shield_min")
 	local max_shield = get_var("alloy_shield_max")
 	
-	local legal_shield = CUTIL.clamp(shield + delta_shield, min_shield, max_shield)
+	local legal_shield = ignore_limits and (shield + delta_shield) or CUTIL.clamp(shield + delta_shield, min_shield, max_shield)
 	local legal_delta = legal_shield - shield
 	
 	debug_log("legal shields: " .. legal_shield)
@@ -67,17 +67,17 @@ ALLOY.ease_shield = function(delta_shield, silent)
 	
 	if legal_delta == 0 then return end
 	
-	CUTIL.set_variable("alloy_shield", legal_shield)
+	CUTIL.set_variable("alloy_shield", legal_shield or 0)
 	ALLOY.update_health_colour()
 	
-	SMODS.calculate_context({ shield_changed = legal_delta })
+	SMODS.calculate_context({ shield_changed = legal_delta or 0 })
 	
 	if not silent then
 		local bonus = HEX('4CDFFC')
 		local damage = G.C.SUITS.Spades
 		
-		local col = (legal_delta > 0) and bonus or damage
-		local text = (legal_delta > 0) and 'BONUS!' or ''
+		local col = ((legal_delta or 0) > 0) and bonus or damage
+		local text = legal_delta and ((legal_delta > 0) and 'BONUS!' or '') or "Error"
 		attention_text({
 			text = text,
 			scale = 0.8,
