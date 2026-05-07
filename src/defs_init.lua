@@ -1,3 +1,4 @@
 assert(SMODS.load_file("src/defs/atlases.lua"))()
 assert(SMODS.load_file("src/defs/stickers.lua"))()
 assert(SMODS.load_file("src/defs/stakes.lua"))()
+assert(SMODS.load_file("src/defs/jokers.lua"))()
