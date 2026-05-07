@@ -1,3 +1,9 @@
+-- Shield Colours
+
+ALLOY.shield_colour_dull = HEX('164E75')
+ALLOY.shield_colour_bright = HEX('4CDFFC')
+ALLOY.shield_colour_white = HEX('99EEFF')
+
 -- Health Colours
 
 ALLOY.health_colour_negative = G.C.SUITS.Spades
@@ -8,12 +14,6 @@ ALLOY.health_colour_shielded = G.C.CHIPS
 ALLOY.health_text_colours_negative = { G.C.SECONDARY_SET.Enhanced }
 ALLOY.health_text_colours_normal = { G.C.UI.TEXT_LIGHT }
 ALLOY.health_text_colours_shielded = { ALLOY.shield_colour_white }
-
--- Shield Colours
-
-ALLOY.shield_colour_dull = HEX('164E75')
-ALLOY.shield_colour_bright = HEX('4CDFFC')
-ALLOY.shield_colour_white = HEX('99EEFF')
 
 -- HP
 
