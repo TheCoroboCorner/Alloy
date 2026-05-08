@@ -19,6 +19,38 @@ return {
 					
 				}
 			},
+			j_alloy_saiyan_joker = {
+				name = "Saiyan Joker",
+				text = {
+					"This Joker gains",
+					"{X:mult,C:white}X#1#{} Mult for every",
+					"point of {C:uncommon}HP{} recovered",
+					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
+					
+				}
+			},
+			j_alloy_zombie_joker = {
+				name = "Zombie Joker",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult if {C:uncommon}HP{} is",
+					"currently below {C:attention}0"
+				}
+			},
+			j_alloy_nurse_joker = {
+				name = "Nurse Joker",
+				text = {
+					"{C:green}#1# in #2#{} chance to heal",
+					"between {C:attention}#3#{} and {C:attention}#4# {C:uncommon}HP",
+					"at the end of round"
+				}
+			},
+			j_alloy_angel_joker = {
+				name = "Angel Joker",
+				text = {
+					"{X:chips,C:white}X#1#{} Chips if {C:uncommon}HP{} is",
+					"currently above {C:attention}100"
+				}
+			},
 		},
 		Stake = {
 			stake_alloy_blood = {
@@ -101,6 +133,43 @@ return {
 					"{s:0.8}Applies all previous Stakes"
 				}
 			}
+		},
+		Product = {
+			c_alloy_medkit = {
+				name = "Medkit",
+				text = {
+					"Heals {C:uncommon}#1#{} HP"
+				}
+			},
+			c_alloy_golden_apple = {
+				name = "Golden Apple",
+				text = {
+					"Heals {C:uncommon}#1#{} HP",
+					"{s:0.8}(Ignores the usual limit)"
+				}
+			},
+			c_alloy_adrenaline = {
+				name = "Adrenaline",
+				text = {
+					"Allows you to {C:attention}survive",
+					"until your health reaches {C:red}#1#{}"
+				}
+			},
+			c_alloy_plating = {
+				name = "Metal Plating",
+				text = {
+					"Decreases your maximum",
+					"{C:uncommon}HP{} by {C:attention}#1#, but increases",
+					"your maximum {C:common}Shield",
+					"by {C:attention}#1#"
+				}
+			},
+			c_alloy_energy_drink = {
+				name = "Energy Drink",
+				text = {
+					"Gain {C:common}#1#{} Shield"
+				}
+			},
 		},
 		Other = {
 			alloy_vampire = {
@@ -209,10 +278,15 @@ return {
 			
 			b_locked = "Locked ",
 			b_unlocked = "Unlocked ",
+			
+			k_product = "Product",
+			b_product_cards = "Products",
 		},
 		labels = {
 			alloy_vampire = "Vampire",
-			alloy_explosive = "Explosive"
+			alloy_explosive = "Explosive",
+			
+			product = "Product",
 		}
 	}
 }
