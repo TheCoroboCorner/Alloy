@@ -216,35 +216,3 @@ SMODS.Joker {
 		end
 	end
 }
-
-SMODS.Joker {
-	key = "divining_joker",
-	rarity = 1,
-	
-	--atlas = so and so,
-	--pos = { x = something, y = something else },
-	
-	blueprint_compat = false,
-	cost = 4,
-	
-	config = {
-		extra = {
-			health = 10,
-			poker_hand = 'Royal Flush'
-		}
-	},
-	loc_vars = function(self, info_queue, card)
-		return {
-			vars = {
-				card.ability.extra.health,
-				localize(card.ability.extra.poker_hand, 'poker_hands')
-			}
-		}
-	end,
-	
-	calculate = function(self, card, context)
-		if context.joker_main and not context.blueprint and next(context.poker_hands[card.ability.extra.poker_hand]) then
-			ALLOY.ease_health(card.ability.extra.health, false, true)
-		end
-	end
-}
