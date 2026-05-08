@@ -1,6 +1,6 @@
 function ALLOY.update_health_colour()
-	ALLOY.total_health_value = ALLOY.total_health() or 100
-	
+	ALLOY.total_health_value = ALLOY.total_health()
+
 	local health_text_UI = G.HUD:get_UIE_by_ID('health_UI_count')
 	
 	local usual_min_health = 0
@@ -31,7 +31,7 @@ G.FUNCS.update_health = function(e)
 		e.config.colour = ALLOY.health_colour_normal
 	end
 	
-	local hp_percentage = CUTIL.clamp01(ALLOY.hp_percentage())
+	local hp_percentage = CUTIL.clamp01(ALLOY.hp_percentage(true, true))
 	
 	local width = hp_percentage * e.config.maxw
 	
@@ -46,14 +46,12 @@ G.FUNCS.update_shield = function(e)
 	
 	ALLOY.total_health_value = ALLOY.total_health()
 	
-	local percent_factor = 100
-	
 	local shield_colour_pulse_effect = 1 - math.abs(math.sin(G.TIMERS.REAL * 1.8))
 	shield_colour_pulse_effect = shield_colour_pulse_effect ^ 2 -- This is just to make the pulse sharper
 	
-	local shield_colour = CUTIL.vec_lerp(ALLOY.shield_colour_dull, ALLOY.shield_colour_bright, shield_colour_pulse_effect)
+	local shield_colour = CUTIL.vec_lerp(ALLOY.shield_colour_dull, ALLOY.shield_colour_bright, shield_colour_pulse_effect) or ALLOY.health_text_colours_normal[1]
 	local no_shield_colour = G.C.DYN_UI.BOSS_DARK
 	
 	local t = ALLOY.sh_percentage()
-	e.config.colour = CUTIL.vec_lerp(no_shield_colour, shield_colour, t)
+	e.config.colour = CUTIL.vec_lerp(no_shield_colour, shield_colour, t) or ALLOY.health_text_colours_negative[1]
 end

@@ -18,6 +18,6 @@ end
 local can_sell = Card.can_sell_card
 function Card.can_sell_card(self, context)
 	local locked = self.ability.locked or false
-
+	
 	return can_sell(self, context) and not locked
 end

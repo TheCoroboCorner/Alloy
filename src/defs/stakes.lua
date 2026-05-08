@@ -8,14 +8,14 @@ end
 
 local function apply_platinum_stake_dot(self, card, context)
 	if G.GAME.platinum_stake_active then
-		ALLOY.ease_damage(-5)
+		ALLOY.ease_damage(-5, false, true)
 	end
 end
 
 local function apply_warrior_stake_damage_on_skip(self, card, context)
 	if G.GAME.warrior_stake_active then
 		print("test")
-		ALLOY.ease_damage(-10)
+		ALLOY.ease_damage(-10, false, true)
 	end
 end
 

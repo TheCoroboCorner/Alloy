@@ -10,7 +10,7 @@ ALLOY.ease_health = function(delta_health, silent, ignore_limits)
 	local min_health = get_var("alloy_health_min")
 	local max_health = get_var("alloy_health_max")
 	
-	local legal_health = ignore_limits and (health + delta_health) or CUTIL.clamp(health + delta_health, min_health, max_health)
+	local legal_health = ignore_limits and (health + delta_health) or CUTIL.clamp(health + delta_health, math.min(health, min_health), math.max(health, max_health))
 	local legal_delta = legal_health - health
 	
 	debug_log("health + delta_health: " .. health + delta_health)
@@ -59,7 +59,7 @@ ALLOY.ease_shield = function(delta_shield, silent, ignore_limits)
 	local min_shield = get_var("alloy_shield_min")
 	local max_shield = get_var("alloy_shield_max")
 	
-	local legal_shield = ignore_limits and (shield + delta_shield) or CUTIL.clamp(shield + delta_shield, min_shield, max_shield)
+	local legal_shield = ignore_limits and (shield + delta_shield) or CUTIL.clamp(shield + delta_shield, math.min(shield, min_shield), math.max(shield, max_shield))
 	local legal_delta = legal_shield - shield
 	
 	debug_log("legal shields: " .. legal_shield)
@@ -91,7 +91,7 @@ ALLOY.ease_shield = function(delta_shield, silent, ignore_limits)
 	end
 end
 
-ALLOY.ease_damage = function(delta_damage, silent)
+ALLOY.ease_damage = function(delta_damage, silent, ignore_limits)
 	debug_log("Easing damage")
 
 	local hp = get_var("alloy_health")
@@ -128,7 +128,7 @@ ALLOY.ease_damage = function(delta_damage, silent)
 		debug_log("delta shield: " .. shield_remaining - sh)
 		
 		local delta_health = health_remaining - hp
-		ALLOY.ease_health(delta_health, silent or not shield_underflow)
+		ALLOY.ease_health(delta_health, silent or not shield_underflow, ignore_limits)
 		
 		debug_log("delta health: " .. delta_health)
 	else
@@ -145,7 +145,7 @@ ALLOY.ease_damage = function(delta_damage, silent)
 		local delta_shield = delta_damage - delta_health
 		
 		ALLOY.ease_health(delta_health, true)
-		ALLOY.ease_shield(delta_shield, silent)
+		ALLOY.ease_shield(delta_shield, silent, ignore_limits)
 		
 		debug_log("delta shield: " .. delta_shield)
 		debug_log("delta health: " .. delta_health)

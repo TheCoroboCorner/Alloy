@@ -24,28 +24,32 @@ SMODS.Joker {
 	end,
 	
 	calculate = function(self, card, context)
+		for k, v in pairs(SMODS.Stickers) do
+			if card.ability[v.key] then
+				card:remove_sticker(v.key)
+			end
+		end
+	
 		local current_score = G.GAME.chips
 		local target_score = G.GAME.blind.chips
 		
-		local health_as_percentage = ALLOY.hp_percentage_points()
-		local shield_as_percentage = ALLOY.sh_percentage_points()
 		local blind_completion_as_percentage = to_number(current_score / target_score)
 		local blind_remaining_as_percentage = 1 - blind_completion_as_percentage
 		
-		if context.end_of_round and not context.game_over and context.main_eval then 
+		if context.end_of_round and not context.game_over and context.main_eval then
 			if blind_completion_as_percentage >= 1 and G.GAME.current_round.hands_played == 1 then
 				local shield_bonus = get_var("alloy_shield_bonus")
-				ALLOY.ease_shield(shield_bonus)
+				ALLOY.ease_shield(shield_bonus, false, true)
 				
 				SMODS.calculate_context({ shield_boost = true })
 			end
 		end
 		
 		if context.end_of_round and context.game_over and context.main_eval then
-			if ALLOY.health_percentage_points() > blind_remaining_as_percentage then
+			if ALLOY.health_absolute()/100 > blind_remaining_as_percentage then
 				local damage = -math.ceil(blind_remaining_as_percentage * 100)
 				
-				ALLOY.ease_damage(damage)
+				ALLOY.ease_damage(damage, false, true)
 				
 				SMODS.calculate_context({ survived_death = true })
 				
@@ -55,8 +59,6 @@ SMODS.Joker {
 					colour = G.C.RED
 				}
 			else
-				G.GAME.cutil_vars.alloy_health = 0
-				
 				SMODS.calculate_context({ survived_death = false })
 			end
 		end
