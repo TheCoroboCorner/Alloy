@@ -110,6 +110,9 @@ SMODS.Joker {
 	calculate = function(self, card, context)
 		if context.health_changed and context.health_changed > 0 then
 			card.ability.extra.growth = card.ability.extra.growth + context.health_changed * card.ability.extra.scaling_factor
+			return {
+                message = "X" .. card.ability.extra.growth .. " Mult",
+            }
 		end
 		
 		if context.joker_main then			
@@ -183,10 +186,47 @@ SMODS.Joker {
 	end,
 	
 	calculate = function(self, card, context)
-		if context.end_of_round and context.joker_main and not context.blueprint then
+		if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
 			if SMODS.pseudorandom_probability(card, "alloy_nurse", card.ability.extra.numerator, card.ability.extra.denominator) then
-				ALLOY.ease_health(SMODS.pseudorandom("alloy_nurse", card.ability.extra.health_lower, card.ability.extra.health_upper))
+				local health = pseudorandom("alloy_nurse", card.ability.extra.health_lower, card.ability.extra.health_upper)
+				ALLOY.ease_health(health)
+				return {
+					message = "+" .. health .. " HP",
+					colour = G.C.RARITY.Uncommon,
+				}
+			else
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					delay = 0.4,
+					func = function()
+						attention_text({
+							text = localize('k_nope_ex'),
+							scale = 1.3,
+							hold = 1.4,
+							major = card,
+							backdrop_colour = G.C.SECONDARY_SET.Tarot,
+							align = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and
+								'tm' or 'cm',
+							offset = { x = 0, y = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and -0.2 or 0 },
+							silent = true
+						})
+						G.E_MANAGER:add_event(Event({
+							trigger = 'after',
+							delay = 0.06 * G.SETTINGS.GAMESPEED,
+							blockable = false,
+							blocking = false,
+							func = function()
+								play_sound('tarot2', 0.76, 0.4)
+								return true
+							end
+						}))
+						play_sound('tarot2', 1, 0.4)
+						card:juice_up(0.3, 0.5)
+						return true
+					end
+				}))
 			end
+
 		end
 	end
 }
