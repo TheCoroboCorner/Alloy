@@ -2,8 +2,11 @@ SMODS.Joker {
 	key = "cowardly_joker",
 	rarity = 1,
 	
-	--atlas = so and so,
-	--pos = { x = something, y = something else },
+	atlas = "alloy_jokers",
+	pos = {
+		x = 0,
+		y = 0
+	},
 	
 	blueprint_compat = true,
 	cost = 4,
@@ -79,8 +82,11 @@ SMODS.Joker {
 	key = "saiyan_joker",
 	rarity = 2,
 	
-	--atlas = so and so,
-	--pos = { x = something, y = something else },
+	atlas = "alloy_jokers",
+	pos = {
+		x = 2,
+		y = 0
+	},
 	
 	blueprint_compat = true,
 	cost = 4,
