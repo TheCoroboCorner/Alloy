@@ -159,7 +159,7 @@ return {
 				name = "Metal Plating",
 				text = {
 					"Decreases your maximum",
-					"{C:uncommon}HP{} by {C:attention}#1#, but increases",
+					"{C:uncommon}HP{} by {C:attention}#1#{}, but increases",
 					"your maximum {C:common}Shield",
 					"by {C:attention}#1#"
 				}
