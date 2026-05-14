@@ -1,6 +1,6 @@
 local highlight_ref = Card.highlight
 Card.highlight = function(self, is_highlighted)
-    if is_highlighted and self:has_attribute("alloy_hero") then
+    if is_highlighted and self:has_attribute("alloy_hero") and self.config.center.set == "Joker" then
         local txt = localize("alloy_hero_button_j")
         if self.area == G.heroes then txt = localize("alloy_hero_button_h") end
         self.children.alloy_hero_button = UIBox {
