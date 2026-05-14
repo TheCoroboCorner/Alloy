@@ -1,0 +1,32 @@
+[manifest]
+version = "1.0.0"
+priority = 0
+
+# shrink joker cardarea width
+# function Game.start_run
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "joker_W = 4.9*G.CARD_W,"
+position = "at"
+match_indent = true
+payload = "joker_W = 3.7 * G.CARD_W,"
+
+# move joker cardarea to the right
+# function set_screen_positions
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "G.jokers.T.x = G.hand.T.x - 0.1"
+position = "at"
+match_indent = true
+payload = "G.jokers.T.x = G.hand.T.x + 1.2 * G.CARD_W - 0.1"
+
+# add G.heroes to calculating cardareas
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/utils.lua"]'
+pattern = "-- TARGET: add your own CardAreas for joker evaluation"
+position = "before"
+match_indent = true
+payload = "table.insert(t, 1, G.heroes)"

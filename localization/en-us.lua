@@ -281,6 +281,9 @@ return {
 			
 			k_product = "Product",
 			b_product_cards = "Products",
+
+			alloy_hero_button_j = "BECOME HERO",
+			alloy_hero_button_h = "RETURN TO JOKERS",
 		},
 		labels = {
 			alloy_vampire = "Vampire",

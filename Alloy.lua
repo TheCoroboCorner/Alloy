@@ -11,3 +11,5 @@ assert(SMODS.load_file("src/health_init.lua"))()
 assert(SMODS.load_file("src/defs_init.lua"))()
 
 assert(SMODS.load_file("src/hook_init.lua"))()
+
+assert(SMODS.load_file("src/hero_init.lua"))()
