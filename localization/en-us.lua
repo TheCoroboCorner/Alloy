@@ -51,6 +51,47 @@ return {
 					"currently above {C:attention}100"
 				}
 			},
+			
+			j_alloy_knight = {
+				name = "Brave Knight",
+				text = {
+					"Gains {C:chips}1{} Energy when a card is scored",
+					"Unleashes {C:mult}+#1#{} Mult per {C:chips}Energy{} stored",
+					"{C:inactive}(Unleashes when Energy is at least {C:chips}5{C:inactive})",
+					"{C:inactive,s:0.85}(Currently {C:chips,s:0.85}#2#{C:inactive,s:0.85}/{C:chips,s:0.85}#3#{C:inactive,s:0.853} Energy)",
+					"{C:inactive,s:0.7}HP: #4#, ATK: #5#, DEF: #6#"
+				}
+			},
+			j_alloy_golem = {
+				name = "Tough Golem",
+				text = {
+					"Gains {C:chips}1{} Energy per {C:chips}chip value{} scored",
+					"HP increases by {C:uncommon}#1#{} HP when Energy is maxed out",
+					"{C:inactive,s:0.85}(Currently {C:chips,s:0.85}#2#{C:inactive,s:0.85}/{C:chips,s:0.85}#3#{C:inactive,s:0.853} Energy)",
+					"{C:inactive,s:0.7}HP: #4#, ATK: #5#, DEF: #6#"
+				}
+			},
+			j_alloy_dilettante = {
+				name = "Indecisive Dilettante",
+				text = {
+					"Gains {C:chips}1{} Energy when hand played is not",
+					"your {C:attention}last played hand {C:inactive}(#1#)",
+					"Unleashes {X:mult,C:white}X#2#{} Mult per {C:chips}Energy{} stored",
+					"{C:inactive}(Unleashes when hand played is your last played hand)",
+					"{C:inactive,s:0.85}(Currently {C:chips,s:0.85}#3#{C:inactive,s:0.85}/{C:chips,s:0.85}#4#{C:inactive,s:0.853} Energy)",
+					"{C:inactive,s:0.7}HP: #5#, ATK: #6#, DEF: #7#"
+				}
+			},
+			j_alloy_assassin = {
+				name = "Patient Assassin",
+				text = {
+					"Gains {C:chips}1{} Energy when a {C:spades}Spade Flush{} is played",
+					"Can only attack, has no other abilities",
+					"{C:inactive}(Attacks when Energy is maxed out)",
+					"{C:inactive,s:0.85}(Currently {C:chips,s:0.85}#1#{C:inactive,s:0.85}/{C:chips,s:0.85}#2#{C:inactive,s:0.853} Energy)",
+					"{C:inactive,s:0.7}HP: #3#, ATK: #4#, DEF: #5#"
+				}
+			},
 		},
 		Stake = {
 			stake_alloy_blood = {
@@ -284,6 +325,8 @@ return {
 
 			alloy_hero_button_j = "BECOME HERO",
 			alloy_hero_button_h = "RETURN TO JOKERS",
+			
+			alloy_hero_charging = "Charging...",
 		},
 		labels = {
 			alloy_vampire = "Vampire",
