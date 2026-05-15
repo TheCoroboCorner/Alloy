@@ -43,11 +43,8 @@ SMODS.Joker {
 	key = "brave_joker",
 	rarity = 1,
 	
-	atlas = "alloy_jokers",
-	pos = {
-		x = 1,
-		y = 0
-	},
+	--atlas = so and so,
+	--pos = { x = something, y = something else },
 	
 	blueprint_compat = true,
 	cost = 4,
@@ -130,11 +127,8 @@ SMODS.Joker {
 	key = "zombie_joker",
 	rarity = 2,
 	
-	atlas = "alloy_jokers",
-	pos = {
-		x = 3,
-		y = 0
-	},
+	--atlas = so and so,
+	--pos = { x = something, y = something else },
 	
 	blueprint_compat = true,
 	cost = 4,
@@ -165,11 +159,8 @@ SMODS.Joker {
 	key = "nurse_joker",
 	rarity = 2,
 	
-	atlas = "alloy_jokers",
-	pos = {
-		x = 4,
-		y = 0
-	},
+	--atlas = so and so,
+	--pos = { x = something, y = something else },
 	
 	blueprint_compat = false,
 	cost = 4,
@@ -244,11 +235,8 @@ SMODS.Joker {
 	key = "angel_joker",
 	rarity = 1,
 	
-	atlas = "alloy_jokers",
-	pos = {
-		x = 5,
-		y = 0
-	},
+	--atlas = so and so,
+	--pos = { x = something, y = something else },
 	
 	blueprint_compat = true,
 	cost = 4,
@@ -269,7 +257,7 @@ SMODS.Joker {
 	calculate = function(self, card, context)
 		if context.joker_main then
 			return {
-				xchips = (get_var("alloy_health") > 100) and card.ability.extra.chips or 1
+				xmult = (get_var("alloy_health") > 100) and card.ability.extra.chips or 1
 			}
 		end
 	end

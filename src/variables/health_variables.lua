@@ -33,6 +33,13 @@ CUTIL.add_variable("alloy_shield_bonus", 5)
 
 -- Functions
 
+function ALLOY.hero_hp()
+	if G.heroes and G.heroes.cards and G.heroes.cards[1] then
+		return G.heroes.cards[1].ability.extra.hp or 0
+	end
+	return 0
+end
+
 function ALLOY.min_health()
 	local hp_min = get_var("alloy_health_min")
 	local sh_min = get_var("alloy_shield_min")
@@ -44,7 +51,7 @@ function ALLOY.total_health()
 	local hp = get_var("alloy_health")
 	local sh = get_var("alloy_shield")
 	
-	return hp + sh
+	return hp + sh + ALLOY.hero_hp()
 end
 
 ALLOY.total_health_value = ALLOY.total_health()
@@ -53,7 +60,7 @@ function ALLOY.max_health()
 	local hp_max = get_var("alloy_health_max")
 	local sh_max = get_var("alloy_shield_max")
 	
-	return hp_max + sh_max
+	return hp_max + sh_max + ALLOY.hero_hp()
 end
 
 function ALLOY.hp_percentage(absolute_min, absolute_max)

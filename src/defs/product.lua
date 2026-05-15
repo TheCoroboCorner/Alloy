@@ -1,31 +1,17 @@
 SMODS.ConsumableType {
 	key = "Product",
 	collection_rows = { 3, 3 },
-	primary_colour = HEX("132878"),
-	secondary_colour = HEX("132878"),
+	primary_colour = G.C.GREEN,
+	secondary_colour = G.C.GREEN,
 	shop_rate = 0.10
-}
-
-SMODS.UndiscoveredSprite {
-  key = "Product",
-  atlas = "alloy_products",
-  pos = { x = 0, y = 1 },
-  no_overlay = true
 }
 
 SMODS.Consumable {
 	key = "medkit",
 	set = "Product",
 	
-	atlas = "alloy_products",
-	pos = {
-		x = 0,
-		y = 0
-	},
-	soul_pos = {
-		x = 1,
-		y = 0
-	},
+	--atlas = so and so,
+	--pos = { x = something, y = something else },
 	
 	config = {
 		extra = {
@@ -52,15 +38,8 @@ SMODS.Consumable {
 	key = "golden_apple",
 	set = "Product",
 	
-	atlas = "alloy_products",
-	pos = {
-		x = 2,
-		y = 0
-	},
-	soul_pos = {
-		x = 3,
-		y = 0
-	},
+	--atlas = so and so,
+	--pos = { x = something, y = something else },
 	
 	config = {
 		extra = {
@@ -92,15 +71,8 @@ SMODS.Consumable {
 	key = "adrenaline",
 	set = "Product",
 	
-	atlas = "alloy_products",
-	pos = {
-		x = 4,
-		y = 0
-	},
-	soul_pos = {
-		x = 5,
-		y = 0
-	},
+	--atlas = so and so,
+	--pos = { x = something, y = something else },
 	
 	config = {
 		extra = {
@@ -127,15 +99,8 @@ SMODS.Consumable {
 	key = "plating",
 	set = "Product",
 	
-	atlas = "alloy_products",
-	pos = {
-		x = 6,
-		y = 0
-	},
-	soul_pos = {
-		x = 7,
-		y = 0
-	},
+	--atlas = so and so,
+	--pos = { x = something, y = something else },
 	
 	config = {
 		extra = {
@@ -165,15 +130,8 @@ SMODS.Consumable {
 	key = "energy_drink",
 	set = "Product",
 	
-	atlas = "alloy_products",
-	pos = {
-		x = 8,
-		y = 0
-	},
-	soul_pos = {
-		x = 9,
-		y = 0
-	},
+	--atlas = so and so,
+	--pos = { x = something, y = something else },
 	
 	config = {
 		extra = {

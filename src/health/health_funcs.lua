@@ -110,6 +110,23 @@ ALLOY.ease_damage = function(delta_damage, silent, ignore_limits)
 	elseif delta_damage < 0 then -- Damage
 		debug_log("negative delta: " .. delta_damage)
 		
+		if G.heroes.cards[1] then
+			local hero = G.heroes.cards[1]
+			
+			hero.ability.extra.hp = math.min(hero.ability.extra.hp + hero.ability.extra.defense + delta_damage, hero.ability.extra.hp)
+			delta_damage = hero.ability.extra.hp
+			if hero.ability.extra.hp >= 0 then
+				if hero.ability.extra.hp == 0 then
+					hero.ability.extra.hp = math.max(hero.ability.extra.hp, 0)
+					SMODS.destroy_cards(hero, true, true)
+				end
+				return
+			end
+			
+			hero.ability.extra.hp = math.max(hero.ability.extra.hp, 0)
+			SMODS.destroy_cards(hero, true, true)
+		end
+		
 		local shield_remaining = sh + delta_damage
 		
 		local health_remaining = hp

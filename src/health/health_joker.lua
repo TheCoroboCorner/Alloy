@@ -46,7 +46,7 @@ SMODS.Joker {
 		end
 		
 		if context.end_of_round and context.game_over and context.main_eval then
-			if ALLOY.health_absolute()/100 > blind_remaining_as_percentage then
+			if (ALLOY.total_health() - ALLOY.min_health())/100 > blind_remaining_as_percentage then
 				local damage = -math.ceil(blind_remaining_as_percentage * 100)
 				
 				ALLOY.ease_damage(damage, false, true)
