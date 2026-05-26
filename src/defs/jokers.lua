@@ -43,8 +43,11 @@ SMODS.Joker {
 	key = "brave_joker",
 	rarity = 1,
 	
-	--atlas = so and so,
-	--pos = { x = something, y = something else },
+	atlas = "alloy_jokers",
+	pos = {
+		x = 1,
+		y = 0
+	},
 	
 	blueprint_compat = true,
 	cost = 4,
@@ -127,8 +130,11 @@ SMODS.Joker {
 	key = "zombie_joker",
 	rarity = 2,
 	
-	--atlas = so and so,
-	--pos = { x = something, y = something else },
+	atlas = "alloy_jokers",
+	pos = {
+		x = 3,
+		y = 0
+	},
 	
 	blueprint_compat = true,
 	cost = 4,
@@ -159,8 +165,11 @@ SMODS.Joker {
 	key = "nurse_joker",
 	rarity = 2,
 	
-	--atlas = so and so,
-	--pos = { x = something, y = something else },
+	atlas = "alloy_jokers",
+	pos = {
+		x = 4,
+		y = 0
+	},
 	
 	blueprint_compat = false,
 	cost = 4,
@@ -235,8 +244,11 @@ SMODS.Joker {
 	key = "angel_joker",
 	rarity = 1,
 	
-	--atlas = so and so,
-	--pos = { x = something, y = something else },
+	atlas = "alloy_jokers",
+	pos = {
+		x = 5,
+		y = 0
+	},
 	
 	blueprint_compat = true,
 	cost = 4,

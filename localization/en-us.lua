@@ -211,6 +211,14 @@ return {
 					"Gain {C:common}#1#{} Shield"
 				}
 			},
+			c_alloy_cake = {
+				name = "Cake",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult,",
+					"gain {C:uncommon}#3#{} HP and",
+					"loses {X:mult,C:white}X#2#{} per use",
+				}
+			}
 		},
 		Other = {
 			alloy_vampire = {

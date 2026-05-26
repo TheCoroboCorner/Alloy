@@ -8,8 +8,8 @@ assert(SMODS.load_file("src/lock_init.lua"))()
 assert(SMODS.load_file("src/play_last_hand_init.lua"))()
 assert(SMODS.load_file("src/health_init.lua"))()
 
+assert(SMODS.load_file("src/hero_init.lua"))()
 assert(SMODS.load_file("src/defs_init.lua"))()
 
 assert(SMODS.load_file("src/hook_init.lua"))()
 
-assert(SMODS.load_file("src/hero_init.lua"))()

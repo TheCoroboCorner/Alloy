@@ -5,6 +5,13 @@ SMODS.Atlas{ -- Jokers
     py = 95,
 }
 
+SMODS.Atlas{ -- Product
+    key = "alloy_products",
+    path = "products.png",
+    px = 71,
+    py = 95,
+}
+
 SMODS.Atlas{ -- Stickers
     key = "alloy_stickers",
     path = "stickers.png",
