@@ -22,7 +22,9 @@ SMODS.Joker {
 		
 		return {
 			vars = {
-				chips
+				colours = { get_hp_text_color() },
+				chips,
+				get_hp_text()
 			}
 		}
 	end,
@@ -64,7 +66,9 @@ SMODS.Joker {
 		
 		return {
 			vars = {
-				mult
+				colours = { get_hp_text_color() },
+				mult,
+				get_hp_text()
 			}
 		}
 	end,
@@ -104,8 +108,10 @@ SMODS.Joker {
 		
 		return {
 			vars = {
+				colours = { get_hp_text_color() },
 				card.ability.extra.scaling_factor,
-				card.ability.extra.growth
+				card.ability.extra.growth,
+				get_hp_text()
 			}
 		}
 	end,
@@ -147,7 +153,9 @@ SMODS.Joker {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				card.ability.extra.mult
+				colours = { get_hp_text_color() },
+				card.ability.extra.mult,
+				get_hp_text()
 			}
 		}
 	end,
@@ -186,10 +194,12 @@ SMODS.Joker {
 		local numerator, denominator = SMODS.get_probability_vars(card, card.ability.extra.numerator, card.ability.extra.denominator)
 		return {
 			vars = {
+				colours = { get_hp_text_color() },
 				numerator,
 				denominator,
 				card.ability.extra.health_lower,
-				card.ability.extra.health_upper
+				card.ability.extra.health_upper,
+				get_hp_text()
 			}
 		}
 	end,
@@ -261,7 +271,9 @@ SMODS.Joker {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				card.ability.extra.chips
+				colours = {get_hp_text_color()},
+				card.ability.extra.chips,
+				get_hp_text()
 			}
 		}
 	end,

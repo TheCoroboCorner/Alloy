@@ -46,7 +46,9 @@ SMODS.Consumable {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				card.ability.extra.health_healed
+				colours = { get_hp_text_color() },
+				card.ability.extra.health_healed,
+				get_hp_text()
 			}
 		}
 	end,
@@ -81,7 +83,9 @@ SMODS.Consumable {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				card.ability.extra.health_healed
+				colours = { get_hp_text_color() },
+				card.ability.extra.health_healed,
+				get_hp_text()
 			}
 		}
 	end,
@@ -121,7 +125,9 @@ SMODS.Consumable {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				get_var("alloy_health_min") - card.ability.extra.extra_health
+				colours = { get_hp_text_color() },
+				get_var("alloy_health_min") - card.ability.extra.extra_health,
+				get_hp_text()
 			}
 		}
 	end,
@@ -156,7 +162,9 @@ SMODS.Consumable {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				card.ability.extra.extra_shield
+				colours = { get_hp_text_color() },
+				card.ability.extra.extra_shield,
+				get_hp_text()
 			}
 		}
 	end,
@@ -231,9 +239,11 @@ SMODS.Consumable {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
+				colours = { get_hp_text_color() },
 				card.ability.extra.xmult,
 				card.ability.extra.xmult_loss,
-				card.ability.extra.health_healed
+				card.ability.extra.health_healed,
+				get_hp_text()
 			}
 		}
 	end,
@@ -303,6 +313,11 @@ SMODS.Consumable {
 	end,
 	
 	use = function(self, card, area, copier)
+		if get_var("alloy_health_mode") == "hp" then
+			SPify()
+		elseif get_var("alloy_health_mode") == "sp" then
+			HPify()
+		end
 	end
 }
 

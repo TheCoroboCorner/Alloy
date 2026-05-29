@@ -55,7 +55,8 @@ payload = '''
                         text = "Health", 
                         scale = 0.85 * scale, 
                         colour = G.C.UI.TEXT_LIGHT, 
-                        shadow = true
+                        shadow = true,
+                        func = "update_health_text"
                       }
                     },
                   }

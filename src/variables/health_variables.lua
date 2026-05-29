@@ -10,12 +10,15 @@ ALLOY.health_colour_negative = G.C.SUITS.Spades
 ALLOY.health_colour_normal = G.C.RED
 ALLOY.health_colour_bonus = G.C.MONEY
 ALLOY.health_colour_shielded = G.C.CHIPS
+ALLOY.health_colour_slime = G.C.CHIPS
 
 ALLOY.health_text_colours_negative = { G.C.SECONDARY_SET.Enhanced }
 ALLOY.health_text_colours_normal = { G.C.UI.TEXT_LIGHT }
 ALLOY.health_text_colours_shielded = { ALLOY.shield_colour_white }
 
 -- HP
+
+CUTIL.add_variable("alloy_health_mode", "hp")
 
 CUTIL.add_variable("alloy_health", 100) -- Current HP
 CUTIL.add_variable("alloy_starting_health", 100)

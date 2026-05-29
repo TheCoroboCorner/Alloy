@@ -1,49 +1,95 @@
 ALLOY.ease_health = function(delta_health, silent, ignore_limits)
-	debug_log("Easing health")
-	
-	local health_text_UI = G.HUD:get_UIE_by_ID('health_UI_count')
-	
-	delta_health = delta_health or 0
-	silent = silent or false
-	
-	local health = get_var("alloy_health")
-	local min_health = get_var("alloy_health_min")
-	local max_health = get_var("alloy_health_max")
-	
-	local legal_health = ignore_limits and (health + delta_health) or CUTIL.clamp(health + delta_health, math.min(health, min_health), math.max(health, max_health))
-	local legal_delta = legal_health - health
-	
-	debug_log("health + delta_health: " .. health + delta_health)
-	debug_log("min health: " .. min_health)
-	debug_log("max delta: " .. max_health)
-	debug_log("legal health: " .. legal_health)
-	debug_log("legal delta: " .. legal_delta)
+	if get_var("alloy_health_mode") == "hp" then
+		debug_log("Easing health")
 
-	if legal_delta == 0 then return end
+		local health_text_UI = G.HUD:get_UIE_by_ID('health_UI_count')
 
-	CUTIL.set_variable("alloy_health", legal_health)
-	ALLOY.update_health_colour()
-	
-	SMODS.calculate_context({ health_changed = legal_delta })
+		delta_health = delta_health or 0
+		silent = silent or false
 
-	if not silent then
-		local text = '+'
-		local col = G.C.GREEN
-		if delta_health < 0 then
-			text = ''
-			col = G.C.RED
+		local health = get_var("alloy_health")
+		local min_health = get_var("alloy_health_min")
+		local max_health = get_var("alloy_health_max")
+
+		local legal_health = ignore_limits and (health + delta_health) or
+		CUTIL.clamp(health + delta_health, math.min(health, min_health), math.max(health, max_health))
+		local legal_delta = legal_health - health
+
+		debug_log("health + delta_health: " .. health + delta_health)
+		debug_log("min health: " .. min_health)
+		debug_log("max delta: " .. max_health)
+		debug_log("legal health: " .. legal_health)
+		debug_log("legal delta: " .. legal_delta)
+
+		if legal_delta == 0 then return end
+
+		CUTIL.set_variable("alloy_health", legal_health)
+		ALLOY.update_health_colour()
+
+		SMODS.calculate_context({ health_changed = legal_delta })
+
+		if not silent then
+			local text = '+'
+			local col = G.C.GREEN
+			if delta_health < 0 then
+				text = ''
+				col = G.C.RED
+			end
+
+			attention_text({
+				text = text .. legal_delta and tostring(legal_delta) or "Error",
+				scale = 0.8,
+				hold = 0.7,
+				cover = health_text_UI.parent,
+				cover_colour = col,
+				align = 'cm'
+			})
+
+			play_sound('chips2')
 		end
-		
-		attention_text({
-			text = text .. legal_delta and tostring(legal_delta) or "Error",
-			scale = 0.8,
-			hold = 0.7,
-			cover = health_text_UI.parent,
-			cover_colour = col,
-			align = 'cm'
-		})
-	
-		play_sound('chips2')
+	elseif get_var("alloy_health_mode") == "sp" then
+		if delta_health < 0 then
+			debug_log("Easing health")
+
+			local health_text_UI = G.HUD:get_UIE_by_ID('health_UI_count')
+
+			delta_health = delta_health or 0
+			silent = silent or false
+
+			local health = get_var("alloy_health")
+			local min_health = get_var("alloy_health_min")
+			local max_health = get_var("alloy_health_max")
+
+			local legal_health = ignore_limits and (health + delta_health) or
+				CUTIL.clamp(health + delta_health, math.min(health, min_health), math.max(health, max_health))
+			local legal_delta = legal_health - health
+
+			debug_log("health + delta_health: " .. health + delta_health)
+			debug_log("min health: " .. min_health)
+			debug_log("max delta: " .. max_health)
+			debug_log("legal health: " .. legal_health)
+			debug_log("legal delta: " .. legal_delta)
+
+			if legal_delta == 0 then return end
+
+			CUTIL.set_variable("alloy_health", legal_health)
+			ALLOY.update_health_colour()
+
+			SMODS.calculate_context({ health_changed = legal_delta })
+
+			if not silent then
+				attention_text({
+					text = legal_delta and tostring(legal_delta) or "Error",
+					scale = 0.8,
+					hold = 0.7,
+					cover = health_text_UI.parent,
+					cover_colour = G.C.RED,
+					align = 'cm'
+				})
+
+				play_sound('chips2')
+			end
+		end
 	end
 end
 
@@ -166,5 +212,75 @@ ALLOY.ease_damage = function(delta_damage, silent, ignore_limits)
 		
 		debug_log("delta shield: " .. delta_shield)
 		debug_log("delta health: " .. delta_health)
+	end
+end
+
+ALLOY.consume_food_joker = function(card, silent, ignore_limits)
+	local function get_dh_by_joker(j)
+		if j:is_rarity(1) then -- common
+			return 10
+		elseif j:is_rarity(2) then -- uncommon
+			return 20
+		elseif j:is_rarity(3) then -- rare
+			return 40
+		elseif j:is_rarity(4) then -- legendary
+			return 80
+		else -- modded
+			return 30
+		end
+	end
+	local delta_health = get_dh_by_joker(card)
+	if get_var("alloy_health_mode") == "sp" then
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0,
+			func = function()
+				card:start_dissolve(nil, nil, 0.9)
+				return true
+			end,
+		}))
+		debug_log("Easing health")
+
+		local health_text_UI = G.HUD:get_UIE_by_ID('health_UI_count')
+
+		delta_health = delta_health or 0
+		silent = silent or false
+
+		local health = get_var("alloy_health")
+		local min_health = get_var("alloy_health_min")
+		local max_health = get_var("alloy_health_max")
+
+		local legal_health = ignore_limits and (health + delta_health) or
+			CUTIL.clamp(health + delta_health, math.min(health, min_health), math.max(health, max_health))
+		local legal_delta = legal_health - health
+
+		debug_log("health + delta_health: " .. health + delta_health)
+		debug_log("min health: " .. min_health)
+		debug_log("max delta: " .. max_health)
+		debug_log("legal health: " .. legal_health)
+		debug_log("legal delta: " .. legal_delta)
+
+		if legal_delta == 0 then return end
+
+		CUTIL.set_variable("alloy_health", legal_health)
+		ALLOY.update_health_colour()
+
+		SMODS.calculate_context({ health_changed = legal_delta })
+
+		if not silent then
+			local text = '+'
+			local col = G.C.GREEN
+
+			attention_text({
+				text = text .. legal_delta and tostring(legal_delta) or "Error",
+				scale = 0.8,
+				hold = 0.7,
+				cover = health_text_UI.parent,
+				cover_colour = col,
+				align = 'cm'
+			})
+
+			play_sound('chips2')
+		end
 	end
 end

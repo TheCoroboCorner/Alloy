@@ -5,7 +5,7 @@ return {
 				name = "Cowardly Joker",
 				text = {
 					"Gives more {C:chips}Chips{} the more",
-					"{C:uncommon}HP{} you have",
+					"{V:1}#2#{} you have",
 					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)"
 					
 				}
@@ -14,7 +14,7 @@ return {
 				name = "Brave Joker",
 				text = {
 					"Gives more {C:mult}Mult{} the less",
-					"{C:uncommon}HP{} you have",
+					"{V:1}#2#{} you have",
 					"{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)"
 					
 				}
@@ -24,7 +24,7 @@ return {
 				text = {
 					"This Joker gains",
 					"{X:mult,C:white}X#1#{} Mult for every",
-					"point of {C:uncommon}HP{} recovered",
+					"point of {V:1}#3#{} recovered",
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
 					
 				}
@@ -32,7 +32,7 @@ return {
 			j_alloy_zombie_joker = {
 				name = "Zombie Joker",
 				text = {
-					"{X:mult,C:white}X#1#{} Mult if {C:uncommon}HP{} is",
+					"{X:mult,C:white}X#1#{} Mult if {V:1}#2#{} is",
 					"currently below {C:attention}0"
 				}
 			},
@@ -40,14 +40,14 @@ return {
 				name = "Nurse Joker",
 				text = {
 					"{C:green}#1# in #2#{} chance to heal",
-					"between {C:attention}#3#{} and {C:attention}#4# {C:uncommon}HP",
+					"between {C:attention}#3#{} and {C:attention}#4# {V:1}#5#",
 					"at the end of round"
 				}
 			},
 			j_alloy_angel_joker = {
 				name = "Angel Joker",
 				text = {
-					"{X:chips,C:white}X#1#{} Chips if {C:uncommon}HP{} is",
+					"{X:chips,C:white}X#1#{} Chips if {V:1}#2#{} is",
 					"currently above {C:attention}100"
 				}
 			},
@@ -179,13 +179,13 @@ return {
 			c_alloy_medkit = {
 				name = "Medkit",
 				text = {
-					"Heals {C:uncommon}#1#{} HP"
+					"Heals {C:attention}#1# {V:1}#2#"
 				}
 			},
 			c_alloy_golden_apple = {
 				name = "Golden Apple",
 				text = {
-					"Heals {C:uncommon}#1#{} HP",
+					"Heals {C:attention}#1# {V:1}#2#",
 					"{s:0.8}(Ignores the usual limit)"
 				}
 			},
@@ -193,14 +193,14 @@ return {
 				name = "Adrenaline",
 				text = {
 					"Allows you to {C:attention}survive",
-					"until your health reaches {C:red}#1#{}"
+					"until your {V:1}#2#{} reaches {C:red}#1#{}"
 				}
 			},
 			c_alloy_plating = {
 				name = "Metal Plating",
 				text = {
 					"Decreases your maximum",
-					"{C:uncommon}HP{} by {C:attention}#1#{}, but increases",
+					"{V:1}#2#{} by {C:attention}#1#{}, but increases",
 					"your maximum {C:common}Shield",
 					"by {C:attention}#1#"
 				}
@@ -215,7 +215,7 @@ return {
 				name = "Cake",
 				text = {
 					"{X:mult,C:white}X#1#{} Mult,",
-					"heals {C:uncommon}#3#{} HP and",
+					"heals {C:attention}#3# {V:1}#4#{} and",
 					"loses {X:mult,C:white}X#2#{} per use",
 				}
 			},
@@ -230,6 +230,11 @@ return {
 			c_alloy_sylvia = {
 				name = "Sylvia",
 				text = {
+					"On use, switch the current",
+					"health vial between {C:green}HP{}",
+					"{C:inactive}(Regular){} and {C:chips}SP{}",
+					"{C:inactive}(Unable to heal normally, but)",
+					"{C:inactive}(can consume food jokers to regen)"
 				}
 			},
 			c_alloy_thunderedge = {
@@ -446,6 +451,13 @@ return {
 			alloy_hero_button_h = "RETURN TO JOKERS",
 			
 			alloy_hero_charging = "Charging...",
+
+			alloy_hp = "HP",
+			alloy_sp = "SP",
+			alloy_food_button = "Eat Joker",
+
+			alloy_hp_label = "Health",
+			alloy_sp_label = "Slime",
 		},
 		labels = {
 			alloy_vampire = "Vampire",
