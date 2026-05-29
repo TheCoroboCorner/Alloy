@@ -215,10 +215,121 @@ return {
 				name = "Cake",
 				text = {
 					"{X:mult,C:white}X#1#{} Mult,",
-					"gain {C:uncommon}#3#{} HP and",
+					"heals {C:uncommon}#3#{} HP and",
 					"loses {X:mult,C:white}X#2#{} per use",
 				}
-			}
+			},
+
+			-- CoroPals
+			
+			c_alloy_corobo = {
+				name = "Corobo",
+				text = {
+				}
+			},
+			c_alloy_sylvia = {
+				name = "Sylvia",
+				text = {
+				}
+			},
+			c_alloy_thunderedge = {
+				name = "ThunderEdge",
+				text = {
+				}
+			},
+			c_alloy_nxkoo = {
+				name = "Nxkoo",
+				text = {
+				}
+			},
+			c_alloy_notmario = {
+				name = "NotMario",
+				text = {
+				}
+			},
+			c_alloy_naku = {
+				name = "Naku",
+				text = {
+				}
+			},
+			c_alloy_gabby = {
+				name = "Gabby",
+				text = {
+					"Enhance {C:attention}#1#{} random",
+					"cards in your offhand",
+					"into {C:attention}#2#",
+				}
+			},
+			c_alloy_foo = {
+				name = "Foo",
+				text = {
+				}
+			},
+			c_alloy_typ0 = {
+				name = "Typ0",
+				text = {
+				}
+			},
+			c_alloy_violet = {
+				name = "Violet",
+				text = {
+				}
+			},
+			c_alloy_jolyne = {
+				name = "Jolyne",
+				text = {
+				}
+			},
+			c_alloy_argel = {
+				name = "Argel",
+				text = {
+				}
+			},
+			c_alloy_astra = {
+				name = "Astra",
+				text = {
+				}
+			},
+			c_alloy_meta = {
+				name = "Meta",
+				text = {
+					"Lose {C:uncommon}#1#{} HP and",
+					"gain {X:chips,C:white}X#3#{} per use,",
+					"{C:red,E:2}self destructs{} when",
+					"{C:attention}Boss Blind{} is defeated",
+					"{C:inactive}(Currently {X:chips,C:white}X#2#{C:inactive} Chips)",
+				}
+			},
+			c_alloy_maxbo = {
+				name = "MaxBo",
+				text = {
+				}
+			},
+			c_alloy_feli = {
+				name = "Feli",
+				text = {
+				}
+			},
+			c_alloy_lily = {
+				name = "Lily",
+				text = {
+				}
+			},
+			c_alloy_inky = {
+				name = "Inky",
+				text = {
+				}
+			},
+			c_alloy_ruby = {
+				name = "Ruby",
+				text = {
+				}
+			},
+			c_alloy_incognito = {
+				name = "Incognito",
+				text = {
+				}
+			},
 		},
 		Other = {
 			alloy_vampire = {

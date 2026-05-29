@@ -12,6 +12,13 @@ SMODS.Atlas{ -- Product
     py = 95,
 }
 
+SMODS.Atlas{ -- CoroPal
+    key = "alloy_coropal",
+    path = "coropal.png",
+    px = 71,
+    py = 95,
+}
+
 SMODS.Atlas{ -- Stickers
     key = "alloy_stickers",
     path = "stickers.png",
