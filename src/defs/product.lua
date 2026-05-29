@@ -419,7 +419,30 @@ SMODS.Consumable {
 	end,
 	
 	use = function(self, card, area, copier)
-		for i = 1, card.ability.extra.amount do
+		local lookup = {}
+		local function getSize(t)
+			local counter = 0
+			for _, _ in pairs(t) do
+				counter = counter + 1
+			end
+			return counter
+		end
+		local function chooseRandomCard()
+			if getSize(lookup) == #G.offhand.cards then return end
+			local ccard = pseudorandom_element(G.offhand.cards, pseudoseed("seed"))
+			if not lookup[ccard] then
+				lookup[ccard] = true
+			else
+				chooseRandomCard()
+			end
+		end
+		for _ = 1, card.ability.extra.amount do
+			chooseRandomCard()
+		end
+		for cardd, _ in pairs(lookup) do
+			quick_enhance_card(cardd, card.ability.extra.enhancement)
+		end
+		--[[for i = 1, card.ability.extra.amount do
 			local convert = pseudorandom_element(pool, 'gabby_convert')
 			G.E_MANAGER:add_event(Event({
 				trigger = 'after',
@@ -430,7 +453,7 @@ SMODS.Consumable {
 					return true
 				end
 			}))
-		end
+		end]]
 	end
 }
 
