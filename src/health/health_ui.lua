@@ -65,7 +65,7 @@ end
 G.FUNCS.alloy_food_joker_sp_click = function(e)
 	local card = e.config.ref_table
 
-	ALLOY.consume_food_joker(card)
+	ALLOY.consume_food_joker(card, false, true)
 end
 
 G.FUNCS.alloy_food_joker_sp_func = function(e)
@@ -146,7 +146,7 @@ SMODS.draw_ignore_keys.alloy_food_joker_sp = true
 
 local highlight_ref = Card.highlight
 function Card.highlight(self, is_highlighted)
-	if is_highlighted and self.ability.set == "Joker" and self.area == G.jokers and self:has_attribute("food") and get_var("alloy_health_mode") == "sp" and get_var("alloy_health")< get_var("alloy_health_max") then
+	if is_highlighted and self.ability.set == "Joker" and self.area == G.jokers and self:has_attribute("food") and get_var("alloy_health_mode") == "sp" --[[and get_var("alloy_health")< get_var("alloy_health_max")]] then
 		self.children.alloy_food_joker_sp = create_my_button_ui(self)
 	elseif self.children.alloy_food_joker_sp then
 		self.children.alloy_food_joker_sp:remove()
