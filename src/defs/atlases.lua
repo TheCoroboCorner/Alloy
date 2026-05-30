@@ -13,6 +13,13 @@ SMODS.Atlas{ -- Product
 }
 
 SMODS.Atlas{ -- CoroPal
+    key = "alloy_product_placeholder",
+    path = "productplaceholder.png",
+    px = 71,
+    py = 95,
+}
+
+SMODS.Atlas{ -- CoroPal
     key = "alloy_coropal",
     path = "coropal.png",
     px = 71,

@@ -215,13 +215,13 @@ return {
 				name = "Cake",
 				text = {
 					"{X:mult,C:white}X#1#{} Mult,",
-					"heals {C:attention}#3# {V:1}#4#{} and",
-					"loses {X:mult,C:white}X#2#{} per use",
+					"heals {C:attention}#3# {V:1}#4#{} and loses",
+					"{X:mult,C:white}X#2#{} Mult per use",
 				}
 			},
 
 			-- CoroPals
-			
+
 			c_alloy_corobo = {
 				name = "Corobo",
 				text = {
@@ -309,8 +309,8 @@ return {
 					"{C:inactive}(Currently {X:chips,C:white}X#2#{C:inactive} Chips)",
 				}
 			},
-			c_alloy_maxbo = {
-				name = "MaxBo",
+			c_alloy_max = {
+				name = "Max",
 				text = {
 				}
 			},
@@ -336,6 +336,41 @@ return {
 			},
 			c_alloy_incognito = {
 				name = "Incognito",
+				text = {
+				}
+			},
+			c_alloy_lexi = {
+				name = "Lexi",
+				text = {
+				}
+			},
+			c_alloy_opal = {
+				name = "Opal",
+				text = {
+				}
+			},
+			c_alloy_ali = {
+				name = "Ali",
+				text = {
+				}
+			},
+			c_alloy_soulware = {
+				name = "Soulware",
+				text = {
+				}
+			},
+			c_alloy_lizzie = {
+				name = "Lizzie",
+				text = {
+				}
+			},
+			c_alloy_omega = {
+				name = "Omega",
+				text = {
+				}
+			},
+			c_alloy_haya = {
+				name = "Haya",
 				text = {
 				}
 			},
