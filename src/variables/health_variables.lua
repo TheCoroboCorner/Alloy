@@ -19,6 +19,14 @@ ALLOY.health_text_colours_shielded = { ALLOY.shield_colour_white }
 -- HP
 
 CUTIL.add_variable("alloy_health_mode", "hp")
+G.E_MANAGER:add_event(Event({
+	trigger = "after",
+	delay = 0,
+	func = function()
+		CUTIL.add_variable("alloy_health_vial_label", localize("alloy_hp_label"))
+		return true
+	end,
+}))
 
 CUTIL.add_variable("alloy_health", 100) -- Current HP
 CUTIL.add_variable("alloy_starting_health", 100)

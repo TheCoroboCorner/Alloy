@@ -8,3 +8,5 @@ ALLOY.reset_game_globals = function(run_start)
 		CUTIL.set_variable("alloy_shield", get_var("alloy_starting_shield"))
 	end
 end
+
+ALLOY.UIDEF = {}

@@ -15,6 +15,12 @@ function ALLOY.update_health_colour()
 	end
 end
 
+ALLOY.HP_VARS = {}
+ALLOY.HP_VARS.TARGET_HP_VIAL_COLOR = ALLOY.health_colour_normal
+ALLOY.HP_VARS.CURRENT_HP_VIAL_COLOR = ALLOY.health_colour_normal
+ALLOY.HP_VARS.VIAL_SCALE = 1
+ALLOY.HP_VARS.HP_VIAL_BOX_SCALE = 1
+
 G.FUNCS.update_health = function(e)
 	local usual_min_health = 0
 	local usual_max_health = 100
@@ -23,27 +29,42 @@ G.FUNCS.update_health = function(e)
 
 	if get_var("alloy_health_mode") == "hp" then
 		if get_var("alloy_health") > usual_max_health then
-			e.config.colour = ALLOY.health_colour_bonus
+			ALLOY.HP_VARS.TARGET_HP_VIAL_COLOR = ALLOY.health_colour_bonus
 		elseif get_var("alloy_health") < usual_min_health then
-			e.config.colour = ALLOY.health_colour_negative
+			ALLOY.HP_VARS.TARGET_HP_VIAL_COLOR = ALLOY.health_colour_negative
 		elseif get_var("alloy_shield") > 0 then
-			e.config.colour = ALLOY.health_colour_shielded
+			ALLOY.HP_VARS.TARGET_HP_VIAL_COLOR = ALLOY.health_colour_shielded
 		else
-			e.config.colour = ALLOY.health_colour_normal
+			ALLOY.HP_VARS.TARGET_HP_VIAL_COLOR = ALLOY.health_colour_normal
 		end
 	elseif get_var("alloy_health_mode") == "sp" then
-		e.config.colour = ALLOY.health_colour_slime
+		ALLOY.HP_VARS.TARGET_HP_VIAL_COLOR = ALLOY.health_colour_slime
 	end
-	
+	e.config.colour = ALLOY.HP_VARS.CURRENT_HP_VIAL_COLOR
 	local hp_percentage = CUTIL.clamp01(ALLOY.hp_percentage(true, true))
 	
-	local width = hp_percentage * e.config.maxw
+	local width = hp_percentage * e.config.maxw * ALLOY.HP_VARS.VIAL_SCALE
 	
 	e.config.minw = width
 	e.T.minw = width
 	e.T.w = width
 end
-
+G.FUNCS.alloy_box_func = function(e)
+	local h = 1.25
+	local w = 1.5
+	e.config.minw = w * ALLOY.HP_VARS.HP_VIAL_BOX_SCALE
+	e.T.minw = w * ALLOY.HP_VARS.HP_VIAL_BOX_SCALE
+	e.T.w = w * ALLOY.HP_VARS.HP_VIAL_BOX_SCALE
+	e.config.minh = h * ALLOY.HP_VARS.HP_VIAL_BOX_SCALE
+	e.T.minh = h * ALLOY.HP_VARS.HP_VIAL_BOX_SCALE
+	e.T.h = h * ALLOY.HP_VARS.HP_VIAL_BOX_SCALE
+end
+local gupdate_ref = Game.update
+function Game:update(dt)
+	ALLOY.HP_VARS.CURRENT_HP_VIAL_COLOR = vec_lerp_dt(ALLOY.HP_VARS.CURRENT_HP_VIAL_COLOR, ALLOY.HP_VARS.TARGET_HP_VIAL_COLOR,
+	0.1, dt)
+	gupdate_ref(self, dt)
+end
 G.FUNCS.update_shield = function(e)
 	local normal_min_shield = get_var("alloy_shield_min")
 	local normal_max_shield = get_var("alloy_shield_max")
@@ -157,16 +178,89 @@ function Card.highlight(self, is_highlighted)
 end
 
 function G.FUNCS.update_health_text(e)
-	e.config.text = get_var("alloy_health_mode") == "sp" and localize("alloy_sp_label") or
-		(get_var("alloy_health_mode") == "hp" and localize("alloy_hp_label") or "Error!")
+	e.config.text = get_var("alloy_health_vial_label")
 	e.UIBox:recalculate()
 end
 function SPify()
 	CUTIL.set_variable("alloy_health_mode", "sp")
+	add_aevent(AEvent({
+		extra = {
+			original = get_var("alloy_health_vial_label"),
+			scaleEaseFunc = easeSplinesLib.createEase(1, 0.5, nil, {preset = "eioc", param = 2}),
+			scaleEaseFunc2 = easeSplinesLib.createEase(1, 1.15, nil, {preset = "eioc", param = 2})
+		},
+		easeFunc = function (t, s)
+			local cur_index = math.floor((1-t) * #s.extra.original + 0.5)
+			if cur_index > 0 then
+				CUTIL.set_variable("alloy_health_vial_label", string.sub(s.extra.original, 1, cur_index))
+			else
+				CUTIL.set_variable("alloy_health_vial_label", "")
+			end
+			ALLOY.HP_VARS.VIAL_SCALE = s.extra.scaleEaseFunc(t)
+			ALLOY.HP_VARS.HP_VIAL_BOX_SCALE = s.extra.scaleEaseFunc2(t)
+		end,
+		duration = 1
+	}), "sp_jank")
+
+	add_aevent(AEvent ({
+		extra = {
+			goal = localize("alloy_sp_label"),
+			scaleEaseFunc = easeSplinesLib.createEase(0.5, 1, nil, { preset = "eioc", param = 2 }),
+			scaleEaseFunc2 = easeSplinesLib.createEase(1.15, 1, nil, {preset = "eioc", param = 2})
+		},
+		easeFunc = function(t, s)
+			local cur_index = math.floor(t * #s.extra.goal + 0.5)
+			if cur_index > 0 then
+				CUTIL.set_variable("alloy_health_vial_label", string.sub(s.extra.goal, 1, cur_index))
+			else
+				CUTIL.set_variable("alloy_health_vial_label", "")
+			end
+			ALLOY.HP_VARS.VIAL_SCALE = s.extra.scaleEaseFunc(t)
+			ALLOY.HP_VARS.HP_VIAL_BOX_SCALE = s.extra.scaleEaseFunc2(t)
+		end,
+		duration = 1
+	}), "sp_jank")
 end
 
 function HPify()
 	CUTIL.set_variable("alloy_health_mode", "hp")
+	add_aevent(AEvent ({
+		extra = {
+			original = get_var("alloy_health_vial_label"),
+			scaleEaseFunc = easeSplinesLib.createEase(1, 0.5, nil, { preset = "eioc", param = 2 }),
+			scaleEaseFunc2 = easeSplinesLib.createEase(1, 1.15, nil, { preset = "eioc", param = 2 })
+		},
+		easeFunc = function(t, s)
+			local cur_index = math.floor((1 - t) * #s.extra.original + 0.5)
+			if cur_index > 0 then
+				CUTIL.set_variable("alloy_health_vial_label", string.sub(s.extra.original, 1, cur_index))
+			else
+				CUTIL.set_variable("alloy_health_vial_label", "")
+			end
+			ALLOY.HP_VARS.VIAL_SCALE = s.extra.scaleEaseFunc(t)
+			ALLOY.HP_VARS.HP_VIAL_BOX_SCALE = s.extra.scaleEaseFunc2(t)
+		end,
+		duration = 1
+	}), "sp_jank")
+
+	add_aevent(AEvent({
+		extra = {
+			goal = localize("alloy_hp_label"),
+			scaleEaseFunc = easeSplinesLib.createEase(0.5, 1, nil, { preset = "eioc", param = 2 }),
+			scaleEaseFunc2 = easeSplinesLib.createEase(1.15, 1, nil, { preset = "eioc", param = 2 })
+		},
+		easeFunc = function(t, s)
+			local cur_index = math.floor(t * #s.extra.goal + 0.5)
+			if cur_index > 0 then
+				CUTIL.set_variable("alloy_health_vial_label", string.sub(s.extra.goal, 1, cur_index))
+			else
+				CUTIL.set_variable("alloy_health_vial_label", "")
+			end
+			ALLOY.HP_VARS.VIAL_SCALE = s.extra.scaleEaseFunc(t)
+			ALLOY.HP_VARS.HP_VIAL_BOX_SCALE = s.extra.scaleEaseFunc2(t)
+		end,
+		duration = 1
+	}), "sp_jank")
 end
 
 function get_hp_text_color()
