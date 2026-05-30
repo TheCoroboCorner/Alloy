@@ -42,7 +42,7 @@ end
 --- More info: https://www.youtube.com/watch?v=LSNQuFEDOyQ
 --- @param a number The starting value.
 --- @param b number The ending value.
---- @param r number The `"speed"`, or fraction of the distance left to traverse in 1 second.
+--- @param r number The `"slowness"`, or fraction of the distance left to traverse in 1 second.
 --- @param dt number Deltatime.
 lerp_dt = function(a, b, r, dt)
     local v = 1 - (r ^ dt)
@@ -53,7 +53,7 @@ end
 --- More info: https://www.youtube.com/watch?v=LSNQuFEDOyQ
 --- @param a table The starting value.
 --- @param b table The ending value.
---- @param r number The `"speed"`, or fraction of the distance left to traverse in 1 second.
+--- @param r number The `"slowness"`, or fraction of the distance left to traverse in 1 second.
 --- @param dt number Deltatime.
 vec_lerp_dt = function(a, b, r, dt)
     assert(a ~= nil and b ~= nil, "Both interpolation variables must be non-nil")
