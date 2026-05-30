@@ -76,7 +76,7 @@ function ALLOY.init_health_cardarea()
 		{ 
 			card_limit = 1,
 			type = "joker",
-			highlighted_limit = 0 
+			highlighted_limit = 0
 		}
 	)
 	ALLOY.health_area = G.alloy_health_area

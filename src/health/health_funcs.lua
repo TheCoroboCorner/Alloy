@@ -154,6 +154,7 @@ ALLOY.ease_damage = function(delta_damage, silent, ignore_limits)
 		
 		return
 	elseif delta_damage < 0 then -- Damage
+
 		debug_log("negative delta: " .. delta_damage)
 		
 		if G.heroes.cards[1] then
@@ -173,6 +174,24 @@ ALLOY.ease_damage = function(delta_damage, silent, ignore_limits)
 			SMODS.destroy_cards(hero, true, true)
 		end
 		
+		local Jolynes = SMODS.find_card("c_alloy_jolyne")
+		if #Jolynes > 0 then
+			local k
+			local maxSeen = 0
+			for kk, card in ipairs(Jolynes) do
+				if card.sell_cost > maxSeen then
+					k = kk
+					maxSeen = card.sell_cost
+				end
+			end
+			local MaxCostCard = Jolynes[k]
+			ALLOY.ease_shield(maxSeen)
+			card_eval_status_text(MaxCostCard, 'extra', nil, nil, nil,
+				{ message = localize('k_jolyne_saved'), colour = G.C.ORANGE })
+			delay(0.1)
+			SMODS.destroy_cards(MaxCostCard)
+		end
+
 		local shield_remaining = sh + delta_damage
 		
 		local health_remaining = hp

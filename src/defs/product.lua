@@ -170,7 +170,7 @@ SMODS.Consumable {
 	end,
 	
 	can_use = function(self, card)
-		return (get_var("alloy_health_max") >= card.ability.extra.extra_shield + get_var("alloy_health_min")) 
+		return (get_var("alloy_health_max") >= card.ability.extra.extra_shield + get_var("alloy_health_min"))
 		   and (get_var("alloy_health")     >= card.ability.extra.extra_shield + get_var("alloy_health_min"))
 	end,
 	use = function(self, card, area, copier)
@@ -557,7 +557,7 @@ SMODS.Consumable {
 	end,
 	
 	can_use = function(self, card)
-		return true
+		return false
 	end,
 	
 	use = function(self, card, area, copier)
@@ -790,4 +790,46 @@ SMODS.Consumable {
 	
 	use = function(self, card, area, copier)
 	end
+}
+
+SMODS.Consumable {
+	key = "willow",
+	set = "Product",
+
+	atlas = "alloy_coropal",
+	pos = { x = 0, y = 4 },
+	soul_pos = { x = 1, y = 4 },
+
+	config = { extra = { rounds_left = 3, heal_amt = 1 } },
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				colours = { get_hp_text_color() },
+				card.ability.extra.rounds_left,
+				card.ability.extra.heal_amt,
+				get_hp_text()
+			}
+		}
+	end,
+	calculate = function(self, card, context)
+		if context.individual and context.cardarea == G.play and card.ability.extra.heal_amt ~= 0 then
+			card_eval_status_text(card, 'extra', nil, nil, nil,
+		{ message = SMODS.signed(card.ability.extra.heal_amt), colour = card.ability.extra.heal_amt > 0 and G.C.GREEN or G.C.RED })
+			ALLOY.ease_health(card.ability.extra.heal_amt)
+		end
+		if context.end_of_round and context.game_over == false then
+			card.ability.extra.rounds_left = card.ability.extra.rounds_left - 1
+			print("a")
+			if card.ability.extra.rounds_left == 0 then
+				SMODS.destroy_cards(card)
+			else
+				card_eval_status_text(card, 'extra', nil, nil, nil,
+					{ message = localize({ type = "variable", key = "a_remaining", vars = { card.ability.extra.rounds_left } }), colour =
+					G.C.ORANGE })
+			end
+		end
+	end,
+	can_use = function(self, card)
+		return false
+	end,
 }

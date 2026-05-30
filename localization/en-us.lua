@@ -283,6 +283,10 @@ return {
 			c_alloy_jolyne = {
 				name = "Jolyne",
 				text = {
+					"When you would take {C:red}damage{},",
+					"add {C:common}Shield {}equivilent",
+					"to this Product's {C:attention}sell value{},",
+					"then {S:1.1,C:red,E:2}self destructs{}."
 				}
 			},
 			c_alloy_argel = {
@@ -333,6 +337,14 @@ return {
 			c_alloy_incognito = {
 				name = "Incognito",
 				text = {
+				}
+			},
+			c_alloy_willow = {
+				name = "Willow",
+				text = {
+					"For the next {C:attention}#1#{} rounds,",
+					"every {C:attention}scored card{}",
+					"gives {C:attention}#2# {V:1}#3#"
 				}
 			},
 		},
@@ -458,6 +470,8 @@ return {
 
 			alloy_hp_label = "Health",
 			alloy_sp_label = "Slime",
+
+			k_jolyne_saved = "I'll save u!!"
 		},
 		labels = {
 			alloy_vampire = "Vampire",
