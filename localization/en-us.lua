@@ -302,7 +302,7 @@ return {
 			c_alloy_meta = {
 				name = "Meta",
 				text = {
-					"Lose {C:uncommon}#1#{} HP and",
+					"Lose {C:attention}#1#{} {V:1}#4#{} and",
 					"gain {X:chips,C:white}X#3#{} per use,",
 					"{C:red,E:2}self destructs{} when",
 					"{C:attention}Boss Blind{} is defeated",

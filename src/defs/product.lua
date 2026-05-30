@@ -620,7 +620,13 @@ SMODS.Consumable {
 
 	loc_vars = function(self, info_queue, card)
 		return {
-			vars = { card.ability.extra.health_loss, card.ability.extra.xchips, card.ability.extra.xchips_gain }
+			vars = {
+				colours = { get_hp_text_color() },
+				card.ability.extra.health_loss,
+				card.ability.extra.xchips,
+				card.ability.extra.xchips_gain,
+				get_hp_text()
+			}
 		}
 	end,
 
