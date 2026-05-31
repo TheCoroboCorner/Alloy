@@ -374,12 +374,42 @@ return {
 				text = {
 				}
 			},
+			c_alloy_elle = {
+				name = "Elle",
+				text = {
+				}
+			},
 			c_alloy_willow = {
 				name = "Willow",
 				text = {
 					"For the next {C:attention}#1#{} rounds,",
 					"every {C:attention}scored card{}",
 					"gives {C:attention}#2# {V:1}#3#"
+				}
+			},
+			c_alloy_missingnumber = {
+				name = "Missing Number",
+				text = {
+				}
+			},
+			c_alloy_pastel = {
+				name = "Pastel",
+				text = {
+				}
+			},
+			c_alloy_sunday = {
+				name = "Sunday",
+				text = {
+				}
+			},
+			c_alloy_stoat = {
+				name = "Stoat",
+				text = {
+				}
+			},
+			c_alloy_sophie = {
+				name = "Sophie",
+				text = {
 				}
 			},
 		},
