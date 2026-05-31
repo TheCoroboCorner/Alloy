@@ -14,7 +14,7 @@ ALLOY.UIDEF.health_vial = function(args)
                 config = {
                     align = "cm",
                     padding = 0.05,
-                    h = 1.25,
+                    h = 1.2,
                     minw = 1.5,
                     colour = temp_col,
                     emboss = 0.05,
@@ -26,7 +26,7 @@ ALLOY.UIDEF.health_vial = function(args)
                         n = G.UIT.R,
                         config = {
                             align = "cm",
-                            minh = 0.33,
+                            minh = 0.2,
                             maxw = 1.35
                         },
                         nodes = {
@@ -45,14 +45,14 @@ ALLOY.UIDEF.health_vial = function(args)
                     {
                         n = G.UIT.R,
                         config = {
-                            id = 'shield_UI_bar',
+                            id = 'health_bg',
                             align = "cl",
                             r = 0.1,
                             minh = 0.75,
                             minw = 1.2,
-                            colour = temp_col2,
+                            colour = ALLOY.health_colour_bg,
                             refresh_movement = true,
-                            func = 'update_shield'
+                            func = 'update_health_bg'
                         },
                         nodes = {
                             {
@@ -67,7 +67,7 @@ ALLOY.UIDEF.health_vial = function(args)
                                 config = {
                                     id = 'health_UI_bar',
                                     align = "cm",
-                                    maxh = 0.65,
+                                    maxh = 0.6,
                                     maxw = 1.05,
                                     minw = 1.05,
                                     colour = G.C.RED,
@@ -83,13 +83,13 @@ ALLOY.UIDEF.health_vial = function(args)
                                                 string = {
                                                     {
                                                         ref_table = ALLOY,
-                                                        ref_value = 'total_health_value'
+                                                        ref_value = 'health_val'
                                                     }
                                                 },
                                                 font = G.LANGUAGES['en-us'].font,
                                                 shadow = true,
                                                 rotate = true,
-                                                scale = scale,
+                                                    scale = scale * 0.95,
                                                 colours = {
                                                     G.C.UI.TEXT_LIGHT
                                                 }
@@ -105,13 +105,115 @@ ALLOY.UIDEF.health_vial = function(args)
                 }
             }
         }
-    },
+        },
+        {
+            n = G.UIT.R,
+            config = {
+                align = "cm"
+            },
+            nodes = {
+                {
+                    n = G.UIT.C,
+                    config = {
+                        align = "cm",
+                        padding = 0.05,
+                        h = 1.2,
+                        minw = 1.5,
+                        colour = temp_col,
+                        emboss = 0.05,
+                        r = 0.1,
+                        func = "alloy_box_func"
+                    },
+                    nodes = {
+                        {
+                            n = G.UIT.R,
+                            config = {
+                                align = "cm",
+                                minh = 0.2,
+                                maxw = 1.35
+                            },
+                            nodes = {
+                                {
+                                    n = G.UIT.T,
+                                    config = {
+                                        text = "Shield",
+                                        scale = 0.85 * scale,
+                                        colour = G.C.UI.TEXT_LIGHT,
+                                        shadow = true,
+                                    }
+                                },
+                            }
+                        },
+                        {
+                            n = G.UIT.R,
+                            config = {
+                                id = 'shield_UI_bar',
+                                align = "cl",
+                                r = 0.1,
+                                minh = 0.75,
+                                minw = 1.2,
+                                colour = temp_col2,
+                                refresh_movement = true,
+                                func = 'update_shield'
+                            },
+                            nodes = {
+                                {
+                                    n = G.UIT.B,
+                                    config = {
+                                        w = 0.08,
+                                        h = 0.6
+                                    }
+                                },
+                                {
+                                    n = G.UIT.C,
+                                    config = {
+                                        id = 'health_UI_bar',
+                                        align = "cm",
+                                        maxh = 0.6,
+                                        maxw = 1.05,
+                                        minw = 1.05,
+                                        colour = G.C.RED,
+                                        refresh_movement = true,
+                                        r = 0.1,
+                                        func = 'update_shield_vial'
+                                    },
+                                    nodes = {
+                                        {
+                                            n = G.UIT.O,
+                                            config = {
+                                                object = DynaText({
+                                                    string = {
+                                                        {
+                                                            ref_table = ALLOY,
+                                                            ref_value = 'shield_val'
+                                                        }
+                                                    },
+                                                    font = G.LANGUAGES['en-us'].font,
+                                                    shadow = true,
+                                                    rotate = true,
+                                                    scale = scale * 0.95,
+                                                    colours = {
+                                                        G.C.UI.TEXT_LIGHT
+                                                    }
+                                                }),
+                                                refresh_movement = true,
+                                                id = 'shield_UI_count',
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
     {
         n = G.UIT.R,
         config = {
             id = 'run_info_button',
             align = "cm",
-            minh = 1.2, -- originally 1.75
+            minh = 0.5, -- originally 1.75
             minw = 1.5,
             padding = 0.05,
             r = 0.1,
@@ -132,27 +234,8 @@ ALLOY.UIDEF.health_vial = function(args)
                     {
                         n = G.UIT.T,
                         config = {
-                            text = localize('b_run_info_1'),
-                            scale = 1.2 * scale,
-                            colour = G.C.UI.TEXT_LIGHT,
-                            shadow = true
-                        }
-                    }
-                }
-            },
-            {
-                n = G.UIT.R,
-                config = {
-                    align = "cm",
-                    padding = 0,
-                    maxw = 1.4
-                },
-                nodes = {
-                    {
-                        n = G.UIT.T,
-                        config = {
-                            text = localize('b_run_info_2'),
-                            scale = 1 * scale,
+                            text = localize('b_run_info_1').." "..localize('b_run_info_2'),
+                            scale = 0.75 * scale,
                             colour = G.C.UI.TEXT_LIGHT,
                             shadow = true,
                             focus_args = {
@@ -170,7 +253,7 @@ ALLOY.UIDEF.health_vial = function(args)
         n = G.UIT.R,
         config = {
             align = "cm",
-            minh = 1.2, -- originally 1.75
+            minh = 0.5, -- originally 1.75
             minw = 1.5,
             padding = 0.05,
             r = 0.1,
@@ -196,7 +279,7 @@ ALLOY.UIDEF.health_vial = function(args)
                         n = G.UIT.T,
                         config = {
                             text = localize('b_options'),
-                            scale = scale,
+                            scale = 0.75 * scale,
                             colour = G.C.UI.TEXT_LIGHT,
                             shadow = true
                         }

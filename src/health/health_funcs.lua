@@ -98,7 +98,7 @@ ALLOY.ease_shield = function(delta_shield, silent, ignore_limits)
 
 	local shield_UI = G.HUD:get_UIE_by_ID('shield_UI_bar')
 	
-	local delta_shield = delta_shield or 0
+	delta_shield = delta_shield or 0
 	silent = silent or false
 
 	local shield = get_var("alloy_shield")
@@ -121,11 +121,14 @@ ALLOY.ease_shield = function(delta_shield, silent, ignore_limits)
 	if not silent then
 		local bonus = HEX('4CDFFC')
 		local damage = G.C.SUITS.Spades
-		
+		local text = '+'
+		if legal_delta < 0 then
+			text = ''
+		end
+
 		local col = ((legal_delta or 0) > 0) and bonus or damage
-		local text = legal_delta and ((legal_delta > 0) and 'BONUS!' or '') or "Error"
 		attention_text({
-			text = text,
+			text = text .. legal_delta and tostring(legal_delta) or "Error",
 			scale = 0.8,
 			hold = 0.7,
 			cover = shield_UI,
@@ -173,7 +176,7 @@ ALLOY.ease_damage = function(delta_damage, silent, ignore_limits)
 			hero.ability.extra.hp = math.max(hero.ability.extra.hp, 0)
 			SMODS.destroy_cards(hero, true, true)
 		end
-		
+
 		local Jolynes = SMODS.find_card("c_alloy_jolyne")
 		if #Jolynes > 0 then
 			local k
@@ -302,4 +305,45 @@ ALLOY.consume_food_joker = function(card, silent, ignore_limits)
 			play_sound('chips2')
 		end
 	end
+end
+
+local function check_if_dead()
+	if ALLOY.min_health() >= ALLOY.total_health() then
+		CUTIL.game_lose()
+	end
+end
+
+ALLOY.CALCS.health = function(self, context)
+	local current_score = G.GAME.chips
+	local target_score = G.GAME.blind.chips
+
+	local blind_completion_as_percentage = to_number(current_score / target_score)
+	local blind_remaining_as_percentage = 1 - blind_completion_as_percentage
+
+	if context.end_of_round and not context.game_over and context.main_eval then
+		if blind_completion_as_percentage >= 1 and G.GAME.current_round.hands_played == 1 then
+			local shield_bonus = get_var("alloy_shield_bonus")
+			ALLOY.ease_shield(shield_bonus, false, true)
+
+			SMODS.calculate_context({ shield_boost = true })
+		end
+	end
+
+	if context.end_of_round and context.game_over and context.main_eval then
+		if (ALLOY.total_health() - ALLOY.min_health()) / 100 > blind_remaining_as_percentage then
+			local damage = -math.ceil(blind_remaining_as_percentage * 100)
+
+			ALLOY.ease_damage(damage, false, true)
+
+			SMODS.calculate_context({ survived_death = true })
+			
+			return {
+				saved = 'ph_health',
+				colour = G.C.RED
+			}
+		else
+			SMODS.calculate_context({ survived_death = false })
+		end
+	end
+	check_if_dead()
 end

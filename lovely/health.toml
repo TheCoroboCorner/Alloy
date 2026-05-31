@@ -7,6 +7,7 @@ priority = 0
 [patches.pattern]
 target = "functions/UI_definitions.lua"
 pattern = '''
+      {n=G.UIT.C, config={align = "cm", r=0.1, colour = G.C.CLEAR, shadow = true, id = 'button_area', padding = 0.2}, nodes={
           {n=G.UIT.R, config={id = 'run_info_button', align = "cm", minh = 1.75, minw = 1.5,padding = 0.05, r = 0.1, hover = true, colour = G.C.RED, button = "run_info", shadow = true}, nodes={
             {n=G.UIT.R, config={align = "cm", padding = 0, maxw = 1.4}, nodes={
               {n=G.UIT.T, config={text = localize('b_run_info_1'), scale = 1.2*scale, colour = G.C.UI.TEXT_LIGHT, shadow = true}}
@@ -20,10 +21,13 @@ pattern = '''
               {n=G.UIT.T, config={text = localize('b_options'), scale = scale, colour = G.C.UI.TEXT_LIGHT, shadow = true}}
             }},
           }}
+        }}
 '''
 position = "at"
 payload = '''
+      {n=G.UIT.C, config={align = "cm", r=0.1, colour = G.C.CLEAR, shadow = true, id = 'button_area', padding = 0.15}, nodes={
           ALLOY.UIDEF.health_vial({temp_col, scale, temp_col2}),
+        }}
 '''
 match_indent = true
 times = 1

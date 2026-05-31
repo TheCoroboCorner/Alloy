@@ -250,6 +250,11 @@ return {
 			c_alloy_notmario = {
 				name = "NotMario",
 				text = {
+					"While held, playing a {C:attention}#2#",
+					"gives you {C:attention}#3# {C:common}Shield{},",
+					"then swaps {C:common}Shield{} and {V:1}#4#{}",
+					"{C:inactive}(Ignores limits when applying shield)",
+					"{C:inactive}(Times remaining: {C:attention}#1#{C:inactive})",
 				}
 			},
 			c_alloy_naku = {
@@ -367,6 +372,8 @@ return {
 			c_alloy_omega = {
 				name = "Omega",
 				text = {
+					"On use, heal {C:attention}#1#%{}",
+					"of your current {V:1}#2#",
 				}
 			},
 			c_alloy_haya = {

@@ -10,7 +10,6 @@ function Game:start_run(args)
 	local ret = game_start_run(self, args)
 	
 	ALLOY.init_hold()
-	ALLOY.init_health_cardarea()
 	
 	return ret
 end

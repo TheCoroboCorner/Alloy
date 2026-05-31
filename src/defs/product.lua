@@ -375,13 +375,45 @@ SMODS.Consumable {
 	pos = { x = 8, y = 0 },
 	soul_pos = { x = 9, y = 0 },
 	
-	config = { extra = { } },
+	config = { extra = {
+		times_left = 3,
+		handtype = "Three of a Kind",
+		shield_inc = 50
+	} },
 	loc_vars = function(self, info_queue, card)
 		return {
-			vars = { }
+			vars = {
+				colours = { get_hp_text_color() },
+				card.ability.extra.times_left,
+				localize(card.ability.extra.handtype, 'poker_hands'),
+				card.ability.extra.shield_inc,
+				get_hp_text()
+			}
 		}
 	end,
 	
+	calculate = function(self, card, context)
+		if context.before and context.scoring_name == card.ability.extra.handtype then
+			ALLOY.ease_shield(card.ability.extra.shield_inc, false, true)
+			delay(0.1)
+			local HP = get_var("alloy_health")
+			local S = get_var("alloy_shield")
+			ALLOY.ease_shield(math.min(HP, get_var("alloy_shield_max")) - S)
+			ALLOY.ease_health(S - HP)
+			card.ability.extra.times_left = card.ability.extra.times_left - 1
+			if card.ability.extra.times_left == 0 then
+				SMODS.destroy_cards(card)
+			else
+				card_eval_status_text(card, 'extra', nil, nil, nil,
+					{
+						message = localize({ type = "variable", key = "a_remaining", vars = { card.ability.extra.times_left } }),
+						colour =
+							G.C.ORANGE
+					})
+			end
+		end
+	end,
+
 	can_use = function(self, card)
 		return true
 	end,
@@ -920,18 +952,22 @@ SMODS.Consumable {
 	pos = { x = 0, y = 5 },
 	soul_pos = { x = 1, y = 5 },
 	
-	config = { extra = { } },
+	config = { extra = { percent = 0.555 } },
 	loc_vars = function(self, info_queue, card)
 		return {
-			vars = { }
+			vars = {
+				colours = { get_hp_text_color() },
+				card.ability.extra.percent * 100,
+				get_hp_text()
+			}
 		}
 	end,
-	
 	can_use = function(self, card)
 		return true
 	end,
 	
 	use = function(self, card, area, copier)
+		ALLOY.ease_health(math.ceil(get_var("alloy_health") * card.ability.extra.percent))
 	end
 }
 
@@ -1007,7 +1043,6 @@ SMODS.Consumable {
 		end
 		if context.end_of_round and context.game_over == false then
 			card.ability.extra.rounds_left = card.ability.extra.rounds_left - 1
-			print("a")
 			if card.ability.extra.rounds_left == 0 then
 				SMODS.destroy_cards(card)
 			else

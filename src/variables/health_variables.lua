@@ -1,11 +1,24 @@
+local old = HEX
+function HEX(a)
+	if string.sub(a, 1, 1) == "#" then
+		a = string.sub(a, 2, #a)
+	end
+	return old(a)
+end
 -- Shield Colours
 
-ALLOY.shield_colour_dull = HEX('164E75')
-ALLOY.shield_colour_bright = HEX('4CDFFC')
-ALLOY.shield_colour_white = HEX('99EEFF')
+ALLOY.shield_colour_none = HEX('#223a63')
+ALLOY.shield_colour_dull = HEX('#164E75')
+ALLOY.shield_colour_bright = HEX('#4CDFFC')
+ALLOY.shield_colour_white = HEX('#99EEFF')
 
 -- Health Colours
 
+ALLOY.health_colour_bg = HEX('#53303c')
+ALLOY.health_colour_overdrive = HEX('#504b21')
+ALLOY.health_colour_overdrive_dull = HEX('#635d27')
+ALLOY.health_colour_overdrive_bright = HEX('#f3f737')
+ALLOY.health_colour_overdrive_white = HEX('#feffdb')
 ALLOY.health_colour_negative = G.C.SUITS.Spades
 ALLOY.health_colour_normal = G.C.RED
 ALLOY.health_colour_bonus = G.C.MONEY
@@ -58,6 +71,16 @@ function ALLOY.min_health()
 	return hp_min + sh_min
 end
 
+function ALLOY.health_value()
+	local hp = get_var("alloy_health")
+
+	return hp
+end
+function ALLOY.shield_value()
+	local sh = get_var("alloy_shield")
+
+	return sh
+end
 function ALLOY.total_health()
 	local hp = get_var("alloy_health")
 	local sh = get_var("alloy_shield")
@@ -66,7 +89,8 @@ function ALLOY.total_health()
 end
 
 ALLOY.total_health_value = ALLOY.total_health()
-
+ALLOY.health_val = ALLOY.health_value()
+ALLOY.shield_val = ALLOY.shield_value()
 function ALLOY.max_health()
 	local hp_max = get_var("alloy_health_max")
 	local sh_max = get_var("alloy_shield_max")
@@ -82,7 +106,6 @@ function ALLOY.hp_percentage(absolute_min, absolute_max)
 	
 	return CUTIL.inverse_lerp(hp_min, hp_max, hp)
 end
-
 function ALLOY.hp_absolute()
 	return get_var("alloy_health") - get_var("alloy_health_min")
 end
@@ -115,28 +138,4 @@ end
 
 function ALLOY.health_absolute()
 	return ALLOY.hp_absolute() + ALLOY.sh_absolute()
-end
-
-function ALLOY.init_health()
-	G.alloy_health_area = CardArea(
-		G.TILE_W - 600 * G.CARD_W - 200.95,
-		-100.1 * G.jokers.T.h,
-		G.jokers.T.w,
-		G.jokers.T.h,
-		{ 
-			card_limit = 1,
-			type = "joker",
-			highlighted_limit = 0 
-		}
-	)
-	ALLOY.health_area = G.alloy_health_area
-	
-	if #ALLOY.health_area.cards == 0 then
-		local health_joker = SMODS.add_card {
-			key = "j_alloy_health_object",
-			area = ALLOY.health_area,
-			skip_materialize = true,
-			no_edition = true
-		}
-	end
 end

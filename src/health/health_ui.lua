@@ -1,5 +1,7 @@
 function ALLOY.update_health_colour()
 	ALLOY.total_health_value = ALLOY.total_health()
+	ALLOY.health_val = ALLOY.health_value()
+	ALLOY.shield_val = ALLOY.shield_value()
 
 	local health_text_UI = G.HUD:get_UIE_by_ID('health_UI_count')
 	
@@ -8,13 +10,23 @@ function ALLOY.update_health_colour()
 	
 	if ALLOY.total_health() < usual_min_health then
 		health_text_UI.config.object.colours = ALLOY.health_text_colours_negative
-	elseif get_var("alloy_shield") > 0 then
-		health_text_UI.config.object.colours = ALLOY.health_text_colours_shielded
 	else
 		health_text_UI.config.object.colours = ALLOY.health_text_colours_normal
 	end
 end
+function ALLOY.update_shield_colour()
+	ALLOY.total_health_value = ALLOY.total_health()
+	ALLOY.health_val = ALLOY.health_value()
+	ALLOY.shield_val = ALLOY.shield_value()
 
+	local shield_text_UI = G.HUD:get_UIE_by_ID('shield_UI_count')
+
+	if get_var("alloy_shield") > 0 then
+		shield_text_UI.config.object.colours = ALLOY.health_text_colours_shielded
+	else
+		shield_text_UI.config.object.colours = ALLOY.health_text_colours_normal
+	end
+end
 ALLOY.HP_VARS = {}
 ALLOY.HP_VARS.TARGET_HP_VIAL_COLOR = ALLOY.health_colour_normal
 ALLOY.HP_VARS.CURRENT_HP_VIAL_COLOR = ALLOY.health_colour_normal
@@ -26,14 +38,14 @@ G.FUNCS.update_health = function(e)
 	local usual_max_health = 100
 	
 	ALLOY.total_health_value = ALLOY.total_health()
+	ALLOY.health_val = ALLOY.health_value()
+	ALLOY.shield_val = ALLOY.shield_value()
 
 	if get_var("alloy_health_mode") == "hp" then
 		if get_var("alloy_health") > usual_max_health then
 			ALLOY.HP_VARS.TARGET_HP_VIAL_COLOR = ALLOY.health_colour_bonus
 		elseif get_var("alloy_health") < usual_min_health then
 			ALLOY.HP_VARS.TARGET_HP_VIAL_COLOR = ALLOY.health_colour_negative
-		elseif get_var("alloy_shield") > 0 then
-			ALLOY.HP_VARS.TARGET_HP_VIAL_COLOR = ALLOY.health_colour_shielded
 		else
 			ALLOY.HP_VARS.TARGET_HP_VIAL_COLOR = ALLOY.health_colour_normal
 		end
@@ -49,8 +61,24 @@ G.FUNCS.update_health = function(e)
 	e.T.minw = width
 	e.T.w = width
 end
+G.FUNCS.update_shield_vial = function(e)
+
+	ALLOY.total_health_value = ALLOY.total_health()
+	ALLOY.health_val = ALLOY.health_value()
+	ALLOY.shield_val = ALLOY.shield_value()
+
+	e.config.colour = ALLOY.health_colour_shielded
+
+	local sh_percentage = CUTIL.clamp01(ALLOY.sh_percentage(true, true))
+
+	local width = sh_percentage * e.config.maxw
+
+	e.config.minw = width
+	e.T.minw = width
+	e.T.w = width
+end
 G.FUNCS.alloy_box_func = function(e)
-	local h = 1.25
+	local h = 1.2
 	local w = 1.5
 	e.config.minw = w * ALLOY.HP_VARS.HP_VIAL_BOX_SCALE
 	e.T.minw = w * ALLOY.HP_VARS.HP_VIAL_BOX_SCALE
@@ -66,19 +94,43 @@ function Game:update(dt)
 	gupdate_ref(self, dt)
 end
 G.FUNCS.update_shield = function(e)
-	local normal_min_shield = get_var("alloy_shield_min")
-	local normal_max_shield = get_var("alloy_shield_max")
 	
 	ALLOY.total_health_value = ALLOY.total_health()
+	ALLOY.health_val = ALLOY.health_value()
+	ALLOY.shield_val = ALLOY.shield_value()
 	
 	local shield_colour_pulse_effect = 1 - math.abs(math.sin(G.TIMERS.REAL * 1.8))
 	shield_colour_pulse_effect = shield_colour_pulse_effect ^ 2 -- This is just to make the pulse sharper
 	
-	local shield_colour = CUTIL.vec_lerp(ALLOY.shield_colour_dull, ALLOY.shield_colour_bright, shield_colour_pulse_effect) or ALLOY.health_text_colours_normal[1]
-	local no_shield_colour = G.C.DYN_UI.BOSS_DARK
+	local shield_colour = CUTIL.vec_lerp(ALLOY.shield_colour_dull, ALLOY.shield_colour_bright, shield_colour_pulse_effect) or
+	ALLOY.health_text_colours_normal[1]
+	local no_shield_colour = ALLOY.shield_colour_none
 	
 	local t = ALLOY.sh_percentage()
 	e.config.colour = CUTIL.vec_lerp(no_shield_colour, shield_colour, t) or ALLOY.health_text_colours_negative[1]
+end
+
+G.FUNCS.update_health_bg = function(e)
+	ALLOY.total_health_value = ALLOY.total_health()
+	ALLOY.health_val = ALLOY.health_value()
+	ALLOY.shield_val = ALLOY.shield_value()
+
+	local health_colour_pulse_effect = 1 - math.abs(math.sin(G.TIMERS.REAL * 1.8 + 1))
+	health_colour_pulse_effect = (health_colour_pulse_effect ^ 2) * 0.95 -- This is just to make the pulse sharper
+	local health_colour
+	local no_health_colour
+	
+	if get_var("alloy_health") > get_var("alloy_health_max") then
+		health_colour = CUTIL.vec_lerp(ALLOY.health_colour_overdrive_dull, ALLOY.health_colour_overdrive_bright,
+		health_colour_pulse_effect) or ALLOY.health_text_colours_normal[1]
+		no_health_colour = ALLOY.health_colour_overdrive
+	else
+		health_colour = ALLOY.health_colour_bg
+		no_health_colour = ALLOY.health_colour_bg
+	end
+
+	local t = math.max(get_var("alloy_health") / get_var("alloy_health_max") - 1, 1)
+	e.config.colour = CUTIL.vec_lerp(no_health_colour, health_colour, t) or ALLOY.health_text_colours_negative[1]
 end
 
 -- SP Jank
