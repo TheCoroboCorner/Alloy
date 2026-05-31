@@ -129,7 +129,7 @@ G.FUNCS.update_health_bg = function(e)
 		no_health_colour = ALLOY.health_colour_bg
 	end
 
-	local t = math.max((get_var("alloy_health") / 100) - 1, 1)
+	local t = math.min((get_var("alloy_health") / 100) - 1, 1)
 	e.config.colour = CUTIL.vec_lerp(no_health_colour, health_colour, t) or ALLOY.health_text_colours_negative[1]
 end
 
