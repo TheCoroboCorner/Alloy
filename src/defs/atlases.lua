@@ -39,3 +39,15 @@ SMODS.Atlas{ -- Stakes
     px = 29,
     py = 29,
 }
+SMODS.Atlas {
+    key = "credits",
+    path = "credits.png",
+    px = 71,
+    py = 95,
+}
+SMODS.Atlas {
+    key = "creditsChar",
+    path = "creditsChar.png",
+    px = 71 * 3,
+    py = 95 * 3,
+}

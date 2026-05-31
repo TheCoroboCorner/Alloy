@@ -136,7 +136,7 @@ ALLOY.UIDEF.health_vial = function(args)
                                 {
                                     n = G.UIT.T,
                                     config = {
-                                        text = "Shield",
+                                        text = localize("alloy_sh_label"),
                                         scale = 0.85 * scale,
                                         colour = G.C.UI.TEXT_LIGHT,
                                         shadow = true,

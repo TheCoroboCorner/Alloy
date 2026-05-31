@@ -543,6 +543,9 @@ return {
 			alloy_hp_label = "Health",
 			alloy_sp_label = "Slime",
 
+			alloy_sh_label = "Shield",
+
+			alloy_tab_label = "Credits",
 			k_jolyne_saved = "I'll save u!!"
 		},
 		labels = {
