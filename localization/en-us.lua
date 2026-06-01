@@ -4,10 +4,11 @@ return {
 			NakuAutumn = {
 				name = "{s:1.5,C:alloy_naku_credit_pink}Naku{s:1.5,C:alloy_naku_credit_green}Autumn",
 				text = {
-					"Test! {C:mult}:3{}",
-					"woah this is actually like",
-					"really cool ui is surprisingly",
-					"easy when you get used to it"
+					"{s:1.1,E:1,C:alloy_naku_gradient}haii!! :3333",
+					"I'm {C:alloy_naku_credit_pink}Naku{C:alloy_naku_credit_green}Autumn{}, proud",
+					"{C:attention,E:2}Programmer{} and{C:attention,E:2} Artist",
+					"for Alloy!",
+					"^v^"
 				}
 			}
 		},

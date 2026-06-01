@@ -4,12 +4,12 @@ ALLOY.CREDITS = {
     SPRITES = {}
 }
 local function register_dev(args)
-    table.insert(ALLOY.DEVS, 
+    table.insert(ALLOY.DEVS,
         {
             atlas = "alloy_credits",
             pos = args.pos or {x = 0, y = 0},
             name = args.name or "NakuAutumn",
-            posText = args.posText or "Page 1"
+            posText = args.posText or "Page 1",
         }
     )
     
@@ -49,6 +49,11 @@ SMODS.Gradient {
     key = 'naku_credit_pink',
     colours = { HEX("#e944d3"), HEX("#e944d3") },
     cycle = 5
+}
+SMODS.Gradient {
+    key = 'naku_gradient',
+    colours = { HEX("#e944d3"), HEX("#60f0a7") },
+    cycle = 2
 }
 -- Largely taken (and modified) from Potato Patch Utils. Shoutout to them!
 local function create_person_credit(person)
@@ -128,7 +133,7 @@ local function create_person_credit(person)
                 end
                 retTable[#retTable + 1] = { n = G.UIT.R, config = { align = 'cm' }, nodes = { { n = G.UIT.C, config = { align = 'cm', colour = G.C.CLEAR, r = 0.1, padding = 0.025 }, nodes = { node } } } }
             end
-            return unpack(retTable)
+            return retTable
     end
     local function generateName()
         local retTable = {}
@@ -146,7 +151,7 @@ local function create_person_credit(person)
             end
             retTable[#retTable + 1] = { n = G.UIT.R, config = { align = 'cm' }, nodes = { { n = G.UIT.C, config = { align = 'cm', colour = G.C.CLEAR, r = 0.1, padding = 0.025 }, nodes = { node } } } }
         end
-        return unpack(retTable)
+        return retTable
     end
     -- create a card for this member
     return {
@@ -168,17 +173,13 @@ local function create_person_credit(person)
                                 config = { align = 'cm', padding = 0.1 },
                                 nodes = {
                                     {
-                                        n = G.UIT.R, config = { minw = 4, minh = 1, r = 0.2, align = "cm", padding = 0.1, colour = G.C.L_BLACK }, nodes = {
-                                            generateName()
-                                        }
+                                        n = G.UIT.R, config = { minw = 4, minh = 1, r = 0.2, align = "cm", padding = 0.1, colour = G.C.L_BLACK }, nodes = generateName()
                                     },
                                     {
                                         n = G.UIT.R, config = { minw = 4, minh = 0.1, r = 0.2, align = "tm", padding = 0.1, colour = G.C.CLEAR }
                                     },
                                     {
-                                        n = G.UIT.R, config = { minw = 4, minh = 3, r = 0.2, align = "tm", padding = 0.1, colour = G.C.L_BLACK }, nodes = {
-                                            generateText()
-                                        }
+                                        n = G.UIT.R, config = { minw = 4, minh = 3, r = 0.2, align = "tm", padding = 0.1, colour = G.C.L_BLACK }, nodes = generateText()
                                     },
                                 }
                             }

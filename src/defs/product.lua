@@ -536,16 +536,92 @@ SMODS.Consumable {
 	
 	config = { extra = { } },
 	loc_vars = function(self, info_queue, card)
-		return {
-			vars = { }
+		local r_mults = {}
+		r_mults[#r_mults + 1] = { string = '_shield', colour = CUTIL.vec_lerp(G.C.JOKER_GREY, G.C.CHIPS, 0.25) }
+		for i = 1, math.max(get_var("alloy_shield"), 2) do
+			r_mults[#r_mults + 1] = tostring(i)
+		end
+		local loc_mult = { string = ' ' .. (localize('k_mult')) .. ', ', colour = G.C.MULT }
+		local r_chips = {}
+		for i = 1, math.max(get_var("alloy_health"), 2) do
+			r_chips[#r_chips + 1] = tostring(i)
+		end
+		r_chips[#r_chips + 1] = { string = '_health', colour = CUTIL.vec_lerp(G.C.JOKER_GREY, G.C.MULT, 0.25) }
+		local loc_chips = { string = ' ' .. 'Chips' .. ', ', colour = G.C.CHIPS }
+		local main_start = {
+			{
+				n = G.UIT.C, config = {colour = G.C.CLEAR, padding = 0.02}, nodes = {
+					{
+						n = G.UIT.R, config = {colour = G.C.CLEAR, padding = 0.1}, nodes = {
+							{ n = G.UIT.T, config = { text = '  +', colour = G.C.MULT, scale = 0.32 } },
+							{ n = G.UIT.O, config = { object = DynaText({ string = r_mults, colours = { G.C.MULT }, pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.5, scale = 0.32, min_cycle_time = 0 }) } },
+							{
+								n = G.UIT.O,
+								config = {
+									object = DynaText({
+										string = {
+											{ string = 'rand()', colour = G.C.JOKER_GREY }, { string = "#@" .. (G.deck and G.deck.cards[1] and G.deck.cards[1].base.id or 11) .. (G.deck and G.deck.cards[1] and G.deck.cards[1].base.suit:sub(1, 1) or 'D'), colour = G.C.RED },
+											loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult, loc_mult,
+											loc_mult, loc_mult, loc_mult, loc_mult },
+										colours = { G.C.UI.TEXT_DARK },
+										pop_in_rate = 9999999,
+										silent = true,
+										random_element = true,
+										pop_delay = 0.2011,
+										scale = 0.32,
+										min_cycle_time = 0
+									})
+								}
+							},
+						},
+					},
+					{
+						n = G.UIT.R,
+						config = { colour = G.C.CLEAR, padding = 0.1 },
+						nodes = {
+							{ n = G.UIT.T, config = { text = '  +', colour = G.C.CHIPS, scale = 0.32 } },
+							{ n = G.UIT.O, config = { object = DynaText({ string = r_chips, colours = { G.C.CHIPS }, pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.5, scale = 0.32, min_cycle_time = 0 }) } },
+							{
+								n = G.UIT.O,
+								config = {
+									object = DynaText({
+										string = {
+											{ string = 'rand()', colour = G.C.JOKER_GREY }, { string = "#@" .. (G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.id or 11) .. (G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.suit:sub(1, 1) or 'D'), colour = G.C.CHIPS },
+											loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips, loc_chips,
+											loc_chips,
+											loc_chips, loc_chips, loc_chips, loc_chips },
+										colours = { G.C.UI.TEXT_DARK },
+										pop_in_rate = 9999999,
+										silent = true,
+										random_element = true,
+										pop_delay = 0.2011,
+										scale = 0.32,
+										min_cycle_time = 0
+									})
+								}
+							},
+						},
+					}
+				}
+			}
 		}
+		return { main_start = main_start }
 	end,
 	
 	can_use = function(self, card)
-		return true
+		return false
 	end,
 	
 	use = function(self, card, area, copier)
+	end,
+	calculate = function(self, card, context)
+        if context.joker_main then
+            return {
+				mult = pseudorandom('alloy_typ0', 1, math.max(get_var("alloy_shield"), 2)),
+				chips = pseudorandom('alloy_typ1', 1, math.max(get_var("alloy_health"), 2) ),
+            }
+        end
+
 	end
 }
 
