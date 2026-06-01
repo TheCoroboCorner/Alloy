@@ -1,5 +1,16 @@
 return {
 	descriptions = {
+		AlloyCredits = {
+			NakuAutumn = {
+				name = "{s:1.5,C:alloy_naku_credit_pink}Naku{s:1.5,C:alloy_naku_credit_green}Autumn",
+				text = {
+					"Test! {C:mult}:3{}",
+					"woah this is actually like",
+					"really cool ui is surprisingly",
+					"easy when you get used to it"
+				}
+			}
+		},
 		Joker = {
 			j_alloy_cowardly_joker = {
 				name = "Cowardly Joker",

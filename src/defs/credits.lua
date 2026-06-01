@@ -24,10 +24,10 @@ SMODS.DrawStep({
                 or Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["alloy_creditsChar"], args.soul_pos or { x = 0, y = 0 })
             obj.role.draw_major = card
             obj:draw_shader("dissolve", 0, nil, nil, card.children.center, scale - 1, 0,
-            - card.T.w * scale + 0.007,
+            - card.T.w * scale + 0.17,
             - card.T.h * scale, nil, 0.6)
             obj:draw_shader("dissolve", nil, nil, nil, card.children.center, scale - 1, 0,
-            - card.T.w * scale + 0.007,
+            - card.T.w * scale + 0.17,
             - card.T.h * scale)
         end
     end,
@@ -40,6 +40,16 @@ register_dev({
     posText = "Page 1",
     soul_pos = { x = 0, y = 0 }
 })
+SMODS.Gradient {
+    key = 'naku_credit_green',
+    colours = { HEX("#60f0a7"), HEX("#60f0a7") },
+    cycle = 5
+}
+SMODS.Gradient {
+    key = 'naku_credit_pink',
+    colours = { HEX("#e944d3"), HEX("#e944d3") },
+    cycle = 5
+}
 -- Largely taken (and modified) from Potato Patch Utils. Shoutout to them!
 local function create_person_credit(person)
     if ALLOY.CREDITS.AREA then
@@ -75,6 +85,7 @@ local function create_person_credit(person)
         -- Attach member and team information to the card
         card.who = person.name
         card.click = person.click or card.click
+        card.states.drag.can = false
 
         ALLOY.CREDITS.NODE = {
             n = G.UIT.C,
@@ -101,7 +112,42 @@ local function create_person_credit(person)
                 }
             }
         }
-
+        local function generateText()
+            local retTable = {}
+            local text = G.localization.descriptions.AlloyCredits[person.name].text_parsed or nil
+            if text then
+                local node = { n = G.UIT.R, config = { colour = G.C.CLEAR, r = 0.1, padding = 0.15, align = 'cm', shadow = true }, nodes = {} }
+                for _, v in ipairs(text) do
+                    table.insert(node.nodes,
+                        {
+                            n = G.UIT.R,
+                            config = { align = 'cm' },
+                            nodes = SMODS.localize_box(v,
+                                { text_colour = G.C.UI.TEXT_LIGHT })
+                        })
+                end
+                retTable[#retTable + 1] = { n = G.UIT.R, config = { align = 'cm' }, nodes = { { n = G.UIT.C, config = { align = 'cm', colour = G.C.CLEAR, r = 0.1, padding = 0.025 }, nodes = { node } } } }
+            end
+            return unpack(retTable)
+    end
+    local function generateName()
+        local retTable = {}
+        local text = G.localization.descriptions.AlloyCredits[person.name].name_parsed or nil
+        if text then
+            local node = { n = G.UIT.R, config = { colour = G.C.CLEAR, r = 0.1, padding = 0.15, align = 'cm', shadow = true }, nodes = {} }
+            for _, v in ipairs(text) do
+                table.insert(node.nodes,
+                    {
+                        n = G.UIT.R,
+                        config = { align = 'cm' },
+                        nodes = SMODS.localize_box(v,
+                            { text_colour = G.C.UI.TEXT_LIGHT })
+                    })
+            end
+            retTable[#retTable + 1] = { n = G.UIT.R, config = { align = 'cm' }, nodes = { { n = G.UIT.C, config = { align = 'cm', colour = G.C.CLEAR, r = 0.1, padding = 0.025 }, nodes = { node } } } }
+        end
+        return unpack(retTable)
+    end
     -- create a card for this member
     return {
         n = G.UIT.R,
@@ -122,13 +168,17 @@ local function create_person_credit(person)
                                 config = { align = 'cm', padding = 0.1 },
                                 nodes = {
                                     {
-                                        n = G.UIT.R, config = { minw = 4, minh = 1, r = 0.2, align = "tm", padding = 0.1, colour = G.C.L_BLACK }
+                                        n = G.UIT.R, config = { minw = 4, minh = 1, r = 0.2, align = "cm", padding = 0.1, colour = G.C.L_BLACK }, nodes = {
+                                            generateName()
+                                        }
                                     },
                                     {
                                         n = G.UIT.R, config = { minw = 4, minh = 0.1, r = 0.2, align = "tm", padding = 0.1, colour = G.C.CLEAR }
                                     },
                                     {
-                                        n = G.UIT.R, config = { minw = 4, minh = 3, r = 0.2, align = "tm", padding = 0.1, colour = G.C.L_BLACK }
+                                        n = G.UIT.R, config = { minw = 4, minh = 3, r = 0.2, align = "tm", padding = 0.1, colour = G.C.L_BLACK }, nodes = {
+                                            generateText()
+                                        }
                                     },
                                 }
                             }
