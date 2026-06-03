@@ -308,7 +308,8 @@ ALLOY.consume_food_joker = function(card, silent, ignore_limits)
 end
 
 local function check_if_dead()
-	if ALLOY.min_health() >= ALLOY.total_health() then
+	if ALLOY.min_health() >= ALLOY.total_health() and not get_var("already_killed") then
+		CUTIL.set_variable("already_killed", true)
 		CUTIL.game_lose()
 	end
 end
