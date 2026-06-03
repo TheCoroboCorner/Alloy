@@ -379,6 +379,7 @@ local function check_if_dead()
 end
 
 ALLOY.CALCS.health = function(self, context)
+	if not G.GAME.blind then return nil end
 	local current_score = G.GAME.chips
 	local target_score = G.GAME.blind.chips
 
