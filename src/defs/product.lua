@@ -286,10 +286,21 @@ SMODS.Consumable {
 	end,
 	
 	can_use = function(self, card)
-		return true
+		return #G.heroes.cards >= 1
 	end,
 	
 	use = function(self, card, area, copier)
+		for _, other_card in pairs(G.heroes.cards) do
+			other_card.ability.extra.energy = other_card.ability.extra.max_energy
+			card_eval_status_text(
+				other_card,
+				"extra",
+				nil,
+				nil,
+				nil,
+				{ message = localize("alloy_hero_charged_ex"), colour = G.C.CHIPS }
+			)
+		end
 	end
 }
 
@@ -696,11 +707,15 @@ SMODS.Consumable {
 	atlas = "alloy_coropal",
 	pos = { x = 2, y = 2 },
 	soul_pos = { x = 3, y = 2 },
-	config = { extra = { } },
+	config = { extra = { hp_inc = 8 } },
 
 	loc_vars = function(self, info_queue, card)
 		return {
-			vars = { }
+			vars = {
+				colours = { get_hp_text_color() },
+				card.ability.extra.hp_inc, card.ability.extra.hp_inc * (G.GAME.alloy_argels_used or 1),
+				get_hp_text()
+			}
 		}
 	end,
 	
@@ -709,6 +724,8 @@ SMODS.Consumable {
 	end,
 	
 	use = function(self, card, area, copier)
+		G.GAME.alloy_argels_used = (G.GAME.alloy_argels_used or 0) + 1
+		ALLOY.ease_health(card.ability.extra.hp_inc * G.GAME.alloy_argels_used)
 	end
 }
 
@@ -1010,19 +1027,92 @@ SMODS.Consumable {
 	atlas = "alloy_coropal",
 	pos = { x = 8, y = 4 },
 	soul_pos = { x = 9, y = 4 },
-	config = { extra = { } },
+	config = {
+		max_highlighted = 3,
+		extra = {
+			suit = 'Clubs',
+		}
+	},
 
 	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_foil
 		return {
-			vars = { }
+			vars = { card.ability.max_highlighted, localize(card.ability.extra.suit, 'suits_plural') }
 		}
 	end,
 	
-	can_use = function(self, card)
-		return true
-	end,
+	-- covered by max_highlighted
+	-- can_use = function(self, card)
+	-- 	return true
+	-- end,
 	
 	use = function(self, card, area, copier)
+		G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.4,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.3, 0.5)
+                return true
+            end
+        }))
+        for i = 1, #G.hand.highlighted do
+            local percent = 1.15 - (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.15,
+                func = function()
+                    G.hand.highlighted[i]:flip()
+                    play_sound('card1', percent)
+                    G.hand.highlighted[i]:juice_up(0.3, 0.3)
+                    return true
+                end
+            }))
+        end
+        delay(0.2)
+        for i = 1, #G.hand.highlighted do
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.1,
+                func = function()
+                    SMODS.change_base(G.hand.highlighted[i], card.ability.extra.suit, '3')
+                    return true
+                end
+            }))
+        end
+        for i = 1, #G.hand.highlighted do
+            local percent = 0.85 + (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.15,
+                func = function()
+                    G.hand.highlighted[i]:flip()
+                    play_sound('tarot2', percent, 0.6)
+                    G.hand.highlighted[i]:juice_up(0.3, 0.3)
+                    return true
+                end
+            }))
+        end
+        for i = 1, #G.hand.highlighted do
+            local percent = 0.85 + (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.15,
+                func = function()
+                    G.hand.highlighted[i]:set_edition("e_foil", true)
+                    return true
+                end
+            }))
+        end
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.2,
+            func = function()
+                G.hand:unhighlight_all()
+                return true
+            end
+        }))
+        delay(0.5)
 	end
 }
 

@@ -237,6 +237,8 @@ return {
 			c_alloy_corobo = {
 				name = "Corobo",
 				text = {
+					"Fully {C:chips}charges{} the current",
+					"{C:attention}Hero Joker"
 				}
 			},
 			c_alloy_sylvia = {
@@ -311,6 +313,10 @@ return {
 			c_alloy_argel = {
 				name = "Argel",
 				text = {
+					"Heals {C:attention}#1# {V:1}#3#{} for",
+					"each {C:attention}Argel{} that has",
+					"been used this run",
+                    "{C:inactive}(Currently {V:1}+#2#{C:inactive} #3#)",
 				}
 			},
 			c_alloy_astra = {
@@ -381,6 +387,9 @@ return {
 			c_alloy_lizzie = {
 				name = "Lizzie",
 				text = {
+					"Converts up to {C:attention}#1#{}",
+					"selected cards into",
+					"{C:dark_edition}Foil{} {C:attention}3s{} of {C:clubs}#2#"
 				}
 			},
 			c_alloy_omega = {
@@ -567,6 +576,10 @@ return {
 			alloy_hero_button_h = "RETURN TO JOKERS",
 			
 			alloy_hero_charging = "Charging...",
+			
+			-- use for fully charged hero
+			-- e.g. corobo coropal
+			alloy_hero_charged_ex = "Charged!",
 
 			alloy_hp = "HP",
 			alloy_sp = "SP",
