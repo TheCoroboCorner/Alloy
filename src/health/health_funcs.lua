@@ -159,7 +159,7 @@ ALLOY.ease_shield = function(delta_shield, silent, ignore_limits)
 				ALLOY.update_shield_colour()
 			end,
 			duration = 1.5
-		}), "healthMod")
+		}), "shieldMod")
 	end
 	ALLOY.update_shield_colour()
 	
