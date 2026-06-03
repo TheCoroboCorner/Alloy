@@ -1,0 +1,27 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = "globals.lua"
+pattern = """        RENTAL = HEX('b18f43'),"""
+position = "after"
+payload = """
+ALLOY_PRODUCT = HEX("132878"),
+
+"""
+overwrite = true
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = """  return G.ARGS.LOC_COLOURS[_c] or _default or G.C.UI.TEXT_DARK"""
+position = "before"
+payload = """
+G.ARGS.LOC_COLOURS['alloy_product'] = G.C.ALLOY_PRODUCT
+"""
+overwrite = true
+match_indent = true

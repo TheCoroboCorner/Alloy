@@ -198,7 +198,7 @@ return {
 				name = "Golden Apple",
 				text = {
 					"Heals {C:attention}#1# {V:1}#2#",
-					"{s:0.8}(Ignores the usual limit)"
+					"{s:0.8,C:inactive}(Ignores the usual limit)"
 				}
 			},
 			c_alloy_adrenaline = {
@@ -242,11 +242,9 @@ return {
 			c_alloy_sylvia = {
 				name = "Sylvia",
 				text = {
-					"On use, switch the current",
-					"health vial between {C:green}HP{}",
-					"{C:inactive}(Regular){} and {C:chips}SP{}",
-					"{C:inactive}(Unable to heal normally, but)",
-					"{C:inactive}(can consume food jokers to regen)"
+					"Switch the current",
+					"health vial between",
+					"{C:green}HP {C:inactive}(Regular){} and {C:chips}SP{}",
 				}
 			},
 			c_alloy_thunderedge = {
@@ -257,16 +255,20 @@ return {
 			c_alloy_nxkoo = {
 				name = "Nxkoo",
 				text = {
+					"Heals {C:attention}#1# {V:1}#4#{} for",
+					"each {C:hearts}#3#{} Card",
+					"in your {C:attention}full deck",
+                    "{C:inactive}(Currently {V:1}+#2#{C:inactive} #4#)",
 				}
 			},
 			c_alloy_notmario = {
 				name = "NotMario",
 				text = {
-					"While held, playing a {C:attention}#2#",
-					"gives you {C:attention}#3# {C:common}Shield{},",
-					"then swaps {C:common}Shield{} and {V:1}#4#{}",
-					"{C:inactive}(Ignores limits when applying shield)",
-					"{C:inactive}(Times remaining: {C:attention}#1#{C:inactive})",
+					"For the next {C:attention}#1#{} played",
+					"{C:attention}#2#s{}, gain",
+					"{C:attention}#3# {C:common}Shield{} and swap",
+					"current {C:common}Shield{} and {V:1}#4#{}",
+					"{s:0.8,C:inactive}(Ignores the usual limit)",
 				}
 			},
 			c_alloy_naku = {
@@ -300,10 +302,10 @@ return {
 			c_alloy_jolyne = {
 				name = "Jolyne",
 				text = {
-					"When you would take {C:red}damage{},",
-					"add {C:common}Shield {}equivilent",
-					"to this Product's {C:attention}sell value{},",
-					"then {S:1.1,C:red,E:2}self destructs{}."
+					"Before the next time you",
+					"take {C:red}damage{}, this {C:alloy_product}Product{}",
+					"gives {C:common}Shield{} equivalent to its",
+					"{C:attention}sell value{} and {C:red,E:2}self destructs{}",
 				}
 			},
 			c_alloy_argel = {
@@ -384,8 +386,8 @@ return {
 			c_alloy_omega = {
 				name = "Omega",
 				text = {
-					"On use, heal {C:attention}#1#%{}",
-					"of your current {V:1}#2#",
+					"Heal {C:attention}#1#%{} of",
+					"your current {V:1}#2#",
 				}
 			},
 			c_alloy_haya = {
@@ -401,9 +403,9 @@ return {
 			c_alloy_willow = {
 				name = "Willow",
 				text = {
-					"For the next {C:attention}#1#{} rounds,",
-					"every {C:attention}scored card{}",
-					"gives {C:attention}#2# {V:1}#3#"
+					"For the next {C:attention}#1#{}",
+					"rounds, every {C:attention}scored{}",
+					"{C:attention}card{} gives {C:attention}#2# {V:1}#3#"
 				}
 			},
 			c_alloy_missingnumber = {
@@ -416,8 +418,8 @@ return {
 				text = {
 				}
 			},
-			c_alloy_sunday = {
-				name = "Sunday",
+			c_alloy_the_long_quiet = {
+				name = "The Long Quiet",
 				text = {
 				}
 			},
@@ -428,6 +430,11 @@ return {
 			},
 			c_alloy_sophie = {
 				name = "Sophie",
+				text = {
+				}
+			},
+			c_alloy_mother = {
+				name = "Møther",
 				text = {
 				}
 			},
@@ -527,6 +534,19 @@ return {
                     "{C:attention}Stake{} difficulty",
                 },
 			},
+			alloy_slime_points = {
+				name = "Slime Points",
+				text = {
+					"Consuming {C:attention}Food{} Jokers",
+					"heals a certain amount",
+					"based on {C:attention}rarity{}",
+					"{s:0.3} ",
+					"{C:common}Common{} -> {C:attention}10 {C:chips}SP{}",
+					"{C:uncommon}Uncommon{} -> {C:attention}20 {C:chips}SP{}",
+					"{C:rare}Rare{} -> {C:attention}40 {C:chips}SP{}",
+					"{C:legendary}Legendary{} -> {C:attention}80 {C:chips}SP{}",
+				}
+			}
 		}
 	},
 	misc = {

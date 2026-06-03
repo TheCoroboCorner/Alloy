@@ -1,8 +1,8 @@
 SMODS.ConsumableType {
 	key = "Product",
 	collection_rows = { 3, 3 },
-	primary_colour = HEX("132878"),
-	secondary_colour = HEX("132878"),
+	primary_colour = G.C.ALLOY_PRODUCT,
+	secondary_colour = G.C.ALLOY_PRODUCT,
 	shop_rate = 0.10,
 	loc_txt = {
         undiscovered = {
@@ -273,12 +273,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "corobo",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 0, y = 0 },
 	soul_pos = { x = 1, y = 0 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -296,13 +295,13 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "sylvia",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 2, y = 0 },
 	soul_pos = { x = 3, y = 0 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = { key = "alloy_slime_points", set = "Other" }
 		return {
 			vars = { }
 		}
@@ -324,12 +323,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "thunderedge",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 4, y = 0 },
 	soul_pos = { x = 5, y = 0 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -347,39 +345,64 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "nxkoo",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 6, y = 0 },
 	soul_pos = { x = 7, y = 0 },
-	
-	config = { extra = { } },
+	config = { 
+		extra = { 
+			health = 2, suit = 'Hearts'
+		} 
+	},
+
 	loc_vars = function(self, info_queue, card)
+		local heart_tally = 0
+        if G.playing_cards then
+            for _, playing_card in ipairs(G.playing_cards) do
+                if playing_card:is_suit(card.ability.extra.suit) then 
+					heart_tally = heart_tally + 1 
+				end
+            end
+        end
 		return {
-			vars = { }
+			vars = { 
+				colours = { get_hp_text_color() },
+				card.ability.extra.health, 
+				card.ability.extra.health * heart_tally, 
+				localize(card.ability.extra.suit, 'suits_singular'),
+				get_hp_text()
+			}
 		}
 	end,
 	
 	can_use = function(self, card)
-		return true
+		return ALLOY.hp_percentage(true, true) < 1
 	end,
-	
+
 	use = function(self, card, area, copier)
+		local heart_tally = 0
+        if G.playing_cards then
+            for _, playing_card in ipairs(G.playing_cards) do
+                if playing_card:is_suit(card.ability.extra.suit) then 
+					heart_tally = heart_tally + 1 
+				end
+            end
+        end
+		ALLOY.ease_health(card.ability.extra.health * heart_tally)
 	end
 }
 
 SMODS.Consumable {
 	key = "notmario",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 8, y = 0 },
 	soul_pos = { x = 9, y = 0 },
-	
 	config = { extra = {
 		times_left = 3,
 		handtype = "Three of a Kind",
 		shield_inc = 50
 	} },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
@@ -425,12 +448,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "naku",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 0, y = 1 },
 	soul_pos = { x = 1, y = 1 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -451,8 +473,8 @@ SMODS.Consumable {
 	atlas = "alloy_coropal",
 	pos = { x = 2, y = 1 },
 	soul_pos = { x = 3, y = 1 },
-	
 	config = { extra = { amount = 2, enhancement = 'm_steel' } },
+
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS[card.ability.extra.enhancement]
 		return {
@@ -506,12 +528,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "foo",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 4, y = 1 },
 	soul_pos = { x = 5, y = 1 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -529,12 +550,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "typ0",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 6, y = 1 },
 	soul_pos = { x = 7, y = 1 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		local r_mults = {}
 		r_mults[#r_mults + 1] = { string = '_shield', colour = CUTIL.vec_lerp(G.C.JOKER_GREY, G.C.CHIPS, 0.25) }
@@ -628,12 +648,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "violet",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 8, y = 1 },
 	soul_pos = { x = 9, y = 1 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -651,12 +670,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "jolyne",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 0, y = 2 },
 	soul_pos = { x = 1, y = 2 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -674,12 +692,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "argel",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 2, y = 2 },
 	soul_pos = { x = 3, y = 2 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -697,12 +714,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "astra",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 4, y = 2 },
 	soul_pos = { x = 5, y = 2 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -770,12 +786,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "max",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 8, y = 2 },
 	soul_pos = { x = 9, y = 2 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -793,12 +808,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "feli",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 0, y = 3 },
 	soul_pos = { x = 1, y = 3 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -816,12 +830,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "lily",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 2, y = 3 },
 	soul_pos = { x = 3, y = 3 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -839,12 +852,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "inky",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 4, y = 3 },
 	soul_pos = { x = 5, y = 3 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -862,12 +874,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "ruby",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 6, y = 3 },
 	soul_pos = { x = 7, y = 3 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -885,12 +896,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "incognito",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 8, y = 3 },
 	soul_pos = { x = 9, y = 3 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -908,12 +918,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "lexi",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 0, y = 4 },
 	soul_pos = { x = 1, y = 4 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -931,12 +940,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "opal",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 2, y = 4 },
 	soul_pos = { x = 3, y = 4 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -954,12 +962,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "ali",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 4, y = 4 },
 	soul_pos = { x = 5, y = 4 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -977,12 +984,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "soulware",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 6, y = 4 },
 	soul_pos = { x = 7, y = 4 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -1000,12 +1006,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "lizzie",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 8, y = 4 },
 	soul_pos = { x = 9, y = 4 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -1023,12 +1028,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "omega",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 0, y = 5 },
 	soul_pos = { x = 1, y = 5 },
-	
 	config = { extra = { percent = 0.555 } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
@@ -1039,7 +1043,7 @@ SMODS.Consumable {
 		}
 	end,
 	can_use = function(self, card)
-		return true
+		return ALLOY.hp_percentage(true, true) < 1
 	end,
 	
 	use = function(self, card, area, copier)
@@ -1050,12 +1054,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "haya",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 2, y = 5 },
 	soul_pos = { x = 3, y = 5 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -1073,12 +1076,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "elle",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 4, y = 5 },
 	soul_pos = { x = 5, y = 5 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -1099,8 +1101,8 @@ SMODS.Consumable {
 	atlas = "alloy_coropal",
 	pos = { x = 6, y = 5 },
 	soul_pos = { x = 7, y = 5 },
-
 	config = { extra = { rounds_left = 3, heal_amt = 1 } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
@@ -1136,12 +1138,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "missingnumber",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 8, y = 5 },
 	soul_pos = { x = 9, y = 5 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -1159,12 +1160,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "pastel",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 0, y = 6 },
 	soul_pos = { x = 1, y = 6 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -1180,14 +1180,13 @@ SMODS.Consumable {
 }
 
 SMODS.Consumable {
-	key = "sunday",
+	key = "the_long_quiet",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 2, y = 6 },
 	soul_pos = { x = 3, y = 6 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -1205,12 +1204,11 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "stoat",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 4, y = 6 },
 	soul_pos = { x = 5, y = 6 },
-	
 	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
@@ -1228,12 +1226,33 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = "sophie",
 	set = "Product",
-	
 	atlas = "alloy_coropal",
 	pos = { x = 6, y = 6 },
 	soul_pos = { x = 7, y = 6 },
-	
 	config = { extra = { } },
+
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = { }
+		}
+	end,
+	
+	can_use = function(self, card)
+		return true
+	end,
+	
+	use = function(self, card, area, copier)
+	end
+}
+
+SMODS.Consumable {
+	key = "mother",
+	set = "Product",
+	atlas = "alloy_coropal",
+	pos = { x = 8, y = 6 },
+	soul_pos = { x = 9, y = 6 },
+	config = { extra = { } },
+
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = { }
