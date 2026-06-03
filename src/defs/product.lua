@@ -1,8 +1,9 @@
+local c = HEX("#132878")
 SMODS.ConsumableType {
 	key = "Product",
 	collection_rows = { 3, 3 },
-	primary_colour = G.C.ALLOY_PRODUCT,
-	secondary_colour = G.C.ALLOY_PRODUCT,
+	primary_colour = c,
+	secondary_colour = c,
 	shop_rate = 0.10,
 	loc_txt = {
         undiscovered = {

@@ -23,7 +23,23 @@ ALLOY.ease_health = function(delta_health, silent, ignore_limits)
 
 		if legal_delta == 0 then return end
 
-		CUTIL.set_variable("alloy_health", legal_health)
+		if silent then CUTIL.set_variable("alloy_health", legal_health) else
+			add_aevent(AEvent({
+				extra = {
+					goal = legal_health,
+					scaleEaseFunc = easeSplinesLib.createEase(health, legal_health, nil, { preset = "eioc", param = 2 }),
+				},
+				easeFunc = function(t, s)
+					CUTIL.set_variable("alloy_health", math.floor(s.extra.scaleEaseFunc(t) + 0.5))
+					ALLOY.update_health_colour()
+				end,
+				endFunc = function(s)
+					CUTIL.set_variable("alloy_health", legal_health)
+					ALLOY.update_health_colour()
+				end,
+				duration = 1.5
+			}), "healthMod")
+		end
 		ALLOY.update_health_colour()
 
 		SMODS.calculate_context({ health_changed = legal_delta })
@@ -71,8 +87,24 @@ ALLOY.ease_health = function(delta_health, silent, ignore_limits)
 			debug_log("legal delta: " .. legal_delta)
 
 			if legal_delta == 0 then return end
-
-			CUTIL.set_variable("alloy_health", legal_health)
+			
+			if silent then CUTIL.set_variable("alloy_health", legal_health) else
+				add_aevent(AEvent({
+					extra = {
+						goal = legal_health,
+						scaleEaseFunc = easeSplinesLib.createEase(health, legal_health, nil, { preset = "eioc", param = 2 }),
+					},
+					easeFunc = function(t, s)
+						CUTIL.set_variable("alloy_health", math.floor(s.extra.scaleEaseFunc(t) + 0.5))
+						ALLOY.update_health_colour()
+					end,
+					endFunc = function(s)
+						CUTIL.set_variable("alloy_health", legal_health)
+						ALLOY.update_health_colour()
+					end,
+					duration = 1.5
+				}), "healthMod")
+			end
 			ALLOY.update_health_colour()
 
 			SMODS.calculate_context({ health_changed = legal_delta })
@@ -112,9 +144,24 @@ ALLOY.ease_shield = function(delta_shield, silent, ignore_limits)
 	debug_log("legal delta: " .. legal_delta)
 	
 	if legal_delta == 0 then return end
-	
-	CUTIL.set_variable("alloy_shield", legal_shield or 0)
-	ALLOY.update_health_colour()
+
+	if silent then CUTIL.set_variable("alloy_shield", legal_shield) else
+		add_aevent(AEvent({
+			extra = {
+				scaleEaseFunc = easeSplinesLib.createEase(shield, legal_shield, nil, { preset = "eioc", param = 2 }),
+			},
+			easeFunc = function(t, s)
+				CUTIL.set_variable("alloy_shield", math.floor(s.extra.scaleEaseFunc(t) + 0.5))
+				ALLOY.update_shield_colour()
+			end,
+			endFunc = function(s)
+			CUTIL.set_variable("alloy_shield", legal_shield)
+				ALLOY.update_shield_colour()
+			end,
+			duration = 1.5
+		}), "healthMod")
+	end
+	ALLOY.update_shield_colour()
 	
 	SMODS.calculate_context({ shield_changed = legal_delta or 0 })
 	
@@ -283,8 +330,25 @@ ALLOY.consume_food_joker = function(card, silent, ignore_limits)
 		debug_log("legal delta: " .. legal_delta)
 
 		if legal_delta == 0 then return end
-
-		CUTIL.set_variable("alloy_health", legal_health)
+		if silent then
+			CUTIL.set_variable("alloy_health", legal_health)
+		else
+			add_aevent(AEvent({
+				extra = {
+					goal = legal_health,
+					scaleEaseFunc = easeSplinesLib.createEase(health, legal_health, nil, { preset = "eioc", param = 2 }),
+				},
+				easeFunc = function(t, s)
+					CUTIL.set_variable("alloy_health", math.floor(s.extra.scaleEaseFunc(t) + 0.5))
+					ALLOY.update_health_colour()
+				end,
+				endFunc = function(s)
+					CUTIL.set_variable("alloy_health", legal_health)
+					ALLOY.update_health_colour()
+				end,
+				duration = 1.5
+			}), "healthMod")
+		end
 		ALLOY.update_health_colour()
 
 		SMODS.calculate_context({ health_changed = legal_delta })

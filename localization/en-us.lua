@@ -303,7 +303,7 @@ return {
 				name = "Jolyne",
 				text = {
 					"Before the next time you",
-					"take {C:red}damage{}, this {C:alloy_product}Product{}",
+					"take {C:red}damage{}, this {C:product}Product{}",
 					"gives {C:common}Shield{} equivalent to its",
 					"{C:attention}sell value{} and {C:red,E:2}self destructs{}",
 				}

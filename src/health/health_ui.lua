@@ -124,9 +124,12 @@ G.FUNCS.update_health_bg = function(e)
 		health_colour = CUTIL.vec_lerp(ALLOY.health_colour_overdrive_dull, ALLOY.health_colour_overdrive_bright,
 		health_colour_pulse_effect) or ALLOY.health_text_colours_normal[1]
 		no_health_colour = ALLOY.health_colour_overdrive
-	else
+	elseif get_var("alloy_health") > 0 then
 		health_colour = ALLOY.health_colour_bg
 		no_health_colour = ALLOY.health_colour_bg
+	else
+		health_colour = HEX("150c41")
+		no_health_colour = HEX("150c41")
 	end
 
 	local t = math.min((get_var("alloy_health") / 100) - 1, 1)
