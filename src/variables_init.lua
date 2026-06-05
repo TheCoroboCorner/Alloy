@@ -6,6 +6,8 @@ ALLOY.reset_game_globals = function(run_start)
 	if run_start then
 		CUTIL.set_variable("alloy_health", get_var("alloy_starting_health"))
 		CUTIL.set_variable("alloy_shield", get_var("alloy_starting_shield"))
+		CUTIL.set_variable("alloy_health_display", get_var("alloy_starting_health"))
+		CUTIL.set_variable("alloy_shield_display", get_var("alloy_starting_shield"))
 	end
 end
 

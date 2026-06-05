@@ -81,7 +81,19 @@ function ALLOY.shield_value()
 
 	return sh
 end
-function ALLOY.total_health()
+function ALLOY.health_value_display()
+	local hp = get_var("alloy_health_display")
+
+	return hp
+end
+
+function ALLOY.shield_value_display()
+	local sh = get_var("alloy_shield_display")
+
+	return sh
+end
+	function
+	ALLOY.total_health()
 	local hp = get_var("alloy_health")
 	local sh = get_var("alloy_shield")
 	
@@ -99,7 +111,7 @@ function ALLOY.max_health()
 end
 
 function ALLOY.hp_percentage(absolute_min, absolute_max)
-	local hp = get_var("alloy_health")
+	local hp = get_var("alloy_health_display")
 	
 	local hp_min = absolute_min and get_var("alloy_health_min") or 0
 	local hp_max = absolute_max and get_var("alloy_health_max") or 100
@@ -111,7 +123,7 @@ function ALLOY.hp_absolute()
 end
 
 function ALLOY.sh_percentage(absolute_min, absolute_max)
-	local sh = get_var("alloy_shield")
+	local sh = get_var("alloy_shield_display")
 	
 	local sh_min = absolute_min and get_var("alloy_shield_min") or 0
 	local sh_max = absolute_max and get_var("alloy_shield_max") or 100

@@ -1,7 +1,7 @@
 function ALLOY.update_health_colour()
 	ALLOY.total_health_value = ALLOY.total_health()
-	ALLOY.health_val = ALLOY.health_value()
-	ALLOY.shield_val = ALLOY.shield_value()
+	ALLOY.health_val = ALLOY.health_value_display()
+	ALLOY.shield_val = ALLOY.shield_value_display()
 
 	local health_text_UI = G.HUD:get_UIE_by_ID('health_UI_count')
 	
@@ -16,8 +16,8 @@ function ALLOY.update_health_colour()
 end
 function ALLOY.update_shield_colour()
 	ALLOY.total_health_value = ALLOY.total_health()
-	ALLOY.health_val = ALLOY.health_value()
-	ALLOY.shield_val = ALLOY.shield_value()
+	ALLOY.health_val = ALLOY.health_value_display()
+	ALLOY.shield_val = ALLOY.shield_value_display()
 
 	local shield_text_UI = G.HUD:get_UIE_by_ID('shield_UI_count')
 
@@ -38,8 +38,8 @@ G.FUNCS.update_health = function(e)
 	local usual_max_health = 100
 	
 	ALLOY.total_health_value = ALLOY.total_health()
-	ALLOY.health_val = ALLOY.health_value()
-	ALLOY.shield_val = ALLOY.shield_value()
+	ALLOY.health_val = ALLOY.health_value_display()
+	ALLOY.shield_val = ALLOY.shield_value_display()
 
 	if get_var("alloy_health_mode") == "hp" then
 		if get_var("alloy_health") > usual_max_health then
@@ -64,8 +64,8 @@ end
 G.FUNCS.update_shield_vial = function(e)
 
 	ALLOY.total_health_value = ALLOY.total_health()
-	ALLOY.health_val = ALLOY.health_value()
-	ALLOY.shield_val = ALLOY.shield_value()
+	ALLOY.health_val = ALLOY.health_value_display()
+	ALLOY.shield_val = ALLOY.shield_value_display()
 
 	e.config.colour = ALLOY.health_colour_shielded
 
@@ -96,8 +96,8 @@ end
 G.FUNCS.update_shield = function(e)
 	
 	ALLOY.total_health_value = ALLOY.total_health()
-	ALLOY.health_val = ALLOY.health_value()
-	ALLOY.shield_val = ALLOY.shield_value()
+	ALLOY.health_val = ALLOY.health_value_display()
+	ALLOY.shield_val = ALLOY.shield_value_display()
 	
 	local shield_colour_pulse_effect = 1 - math.abs(math.sin(G.TIMERS.REAL * 1.8))
 	shield_colour_pulse_effect = shield_colour_pulse_effect ^ 2 -- This is just to make the pulse sharper
@@ -112,8 +112,8 @@ end
 
 G.FUNCS.update_health_bg = function(e)
 	ALLOY.total_health_value = ALLOY.total_health()
-	ALLOY.health_val = ALLOY.health_value()
-	ALLOY.shield_val = ALLOY.shield_value()
+	ALLOY.health_val = ALLOY.health_value_display()
+	ALLOY.shield_val = ALLOY.shield_value_display()
 
 	local health_colour_pulse_effect = 1 - math.abs(math.sin(G.TIMERS.REAL * 1.8 + 1))
 	health_colour_pulse_effect = (health_colour_pulse_effect ^ 2) * 0.7 -- This is just to make the pulse sharper
