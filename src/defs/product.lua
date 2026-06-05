@@ -499,7 +499,63 @@ SMODS.Consumable {
 	end,
 	
 	use = function(self, card, area, copier)
-		local lookup = {}
+        local temp_hand = {}
+
+        for _, playing_card in ipairs(G.offhand.cards) do temp_hand[#temp_hand + 1] = playing_card end
+        table.sort(temp_hand,
+            function(a, b)
+                return not a.playing_card or not b.playing_card or a.playing_card < b.playing_card
+            end
+        )
+
+        pseudoshuffle(temp_hand, 'alloy_gabby')
+
+		G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.4,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.3, 0.5)
+                return true
+            end
+        }))
+        for i = 1, card.ability.extra.amount do
+            local percent = 1.15 - (i - 0.999) / (card.ability.extra.amount - 0.998) * 0.3
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.15,
+                func = function()
+                    temp_hand[i]:flip()
+                    play_sound('card1', percent)
+                    return true
+                end
+            }))
+        end
+        delay(0.2)
+        for i = 1, card.ability.extra.amount do
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.1,
+                func = function()
+                    temp_hand[i]:set_ability(card.ability.extra.enhancement)
+                    return true
+                end
+            }))
+        end
+        for i = 1, card.ability.extra.amount do
+            local percent = 0.85 + (i - 0.999) / (card.ability.extra.amount - 0.998) * 0.3
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.15,
+                func = function()
+                    temp_hand[i]:flip()
+                    play_sound('tarot2', percent, 0.6)
+                    return true
+                end
+            }))
+        end
+
+		--[[local lookup = {}
 		local function getSize(t)
 			local counter = 0
 			for _, _ in pairs(t) do
@@ -521,18 +577,6 @@ SMODS.Consumable {
 		end
 		for cardd, _ in pairs(lookup) do
 			quick_enhance_card(cardd, card.ability.extra.enhancement)
-		end
-		--[[for i = 1, card.ability.extra.amount do
-			local convert = pseudorandom_element(pool, 'gabby_convert')
-			G.E_MANAGER:add_event(Event({
-				trigger = 'after',
-                delay = 0.1,
-				func = function()
-					convert:set_ability(card.ability.extra.enhancement)
-					convert:juice_up()
-					return true
-				end
-			}))
 		end]]
 	end
 }
@@ -663,16 +707,25 @@ SMODS.Consumable {
 	atlas = "alloy_coropal",
 	pos = { x = 8, y = 1 },
 	soul_pos = { x = 9, y = 1 },
-	config = { extra = { } },
+	config = { extra = { shield = 1, requirement = 0.2 } },
 
 	loc_vars = function(self, info_queue, card)
 		return {
-			vars = { }
+			vars = { card.ability.extra.shield, card.ability.extra.requirement }
 		}
+	end,
+
+	calculate = function(self, card, context)
+		if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
+			local shield = math.floor( (to_number(G.GAME.chips) - to_number(G.GAME.blind.chips)) / (to_number(G.GAME.blind.chips) * card.ability.extra.requirement) )
+			ALLOY.ease_shield(card.ability.extra.shield * shield)
+			SMODS.calculate_effect({message = "+" .. (card.ability.extra.shield * shield) .. " Shield", colour = G.C.CHIPS}, card)
+			SMODS.destroy_cards(card, nil, nil, true)
+		end
 	end,
 	
 	can_use = function(self, card)
-		return true
+		return false
 	end,
 	
 	use = function(self, card, area, copier)
@@ -713,14 +766,14 @@ SMODS.Consumable {
 		return {
 			vars = {
 				colours = { get_hp_text_color() },
-				card.ability.extra.hp_inc, card.ability.extra.hp_inc * (G.GAME.alloy_argels_used or 1),
+				card.ability.extra.hp_inc, card.ability.extra.hp_inc * ((G.GAME.alloy_argels_used or 0) + 1),
 				get_hp_text()
 			}
 		}
 	end,
 	
 	can_use = function(self, card)
-		return true
+		return ALLOY.hp_percentage(true, true) < 1
 	end,
 	
 	use = function(self, card, area, copier)

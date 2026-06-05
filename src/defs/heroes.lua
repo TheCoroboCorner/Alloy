@@ -2,6 +2,11 @@ ALLOY.Hero {
 	config = {
 		key = 'knight',
 		rarity = 1,
+		atlas = "alloy_heroes",
+		pos = {
+			x = 0,
+			y = 0
+		},
 		cost = 5,
 		blueprint_compat = false,
 		config = {

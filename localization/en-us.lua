@@ -237,8 +237,8 @@ return {
 			c_alloy_corobo = {
 				name = "Corobo",
 				text = {
-					"Fully {C:chips}charges{} the current",
-					"{C:attention}Hero Joker"
+					"Fully {C:chips}charges{} the",
+					"current {C:attention}Hero Joker"
 				}
 			},
 			c_alloy_sylvia = {
@@ -299,6 +299,10 @@ return {
 			c_alloy_violet = {
 				name = "Violet",
 				text = {
+					"Gain {C:attention}#1# {C:common}Shield{} for every {C:white,X:attention}X#2#{}",
+					"over the Blind Requirement",
+					"when {C:attention}Blind{} is defeated and",
+					"{C:red,E:2}self destructs{}",
 				}
 			},
 			c_alloy_jolyne = {
@@ -327,8 +331,8 @@ return {
 			c_alloy_meta = {
 				name = "Meta",
 				text = {
-					"Lose {C:attention}#1#{} {V:1}#4#{} and",
-					"gain {X:chips,C:white}X#3#{} per use,",
+					"Lose {C:attention}#1#{} {V:1}#4#{} and gain",
+					"{X:chips,C:white}X#3#{} Chips per use,",
 					"{C:red,E:2}self destructs{} when",
 					"{C:attention}Boss Blind{} is defeated",
 					"{C:inactive}(Currently {X:chips,C:white}X#2#{C:inactive} Chips)",
