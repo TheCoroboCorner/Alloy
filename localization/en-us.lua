@@ -213,14 +213,13 @@ return {
 				text = {
 					"Decreases your maximum",
 					"{V:1}#2#{} by {C:attention}#1#{}, but increases",
-					"your maximum {C:common}Shield",
-					"by {C:attention}#1#"
+					"your maximum {C:common}Shield{} by {C:attention}#1#"
 				}
 			},
 			c_alloy_energy_drink = {
 				name = "Energy Drink",
 				text = {
-					"Gain {C:common}#1#{} Shield"
+					"Gain {C:attention}#1#{C:common} Shield"
 				}
 			},
 			c_alloy_cake = {
@@ -229,6 +228,14 @@ return {
 					"{X:mult,C:white}X#1#{} Mult,",
 					"heals {C:attention}#3# {V:1}#4#{} and loses",
 					"{X:mult,C:white}X#2#{} Mult per use",
+				}
+			},
+			c_alloy_chicken = {
+				name = "Chicken",
+				text = {
+					"Destroys {C:attention}#1#{} random",
+                    "cards in hand,",
+                    "gain {C:attention}#2# {V:1}#3#",
 				}
 			},
 
@@ -451,6 +458,11 @@ return {
 				text = {
 				}
 			},
+			c_alloy_katzumo = {
+				name = "Katzumo",
+				text = {
+				}
+			}
 		},
 		Other = {
 			alloy_vampire = {

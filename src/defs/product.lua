@@ -1,7 +1,7 @@
 local c = HEX("#132878")
 SMODS.ConsumableType {
 	key = "Product",
-	collection_rows = { 3, 3 },
+	collection_rows = { 5, 5 },
 	primary_colour = c,
 	secondary_colour = c,
 	shop_rate = 0.10,
@@ -266,6 +266,74 @@ SMODS.Consumable {
 		card.ability.extra.xmult = card.ability.extra.xmult - card.ability.extra.xmult_loss
 		ALLOY.ease_health(card.ability.extra.health_healed)
 		SMODS.calculate_effect({message = "-X" .. card.ability.extra.xmult_loss .. " Mult", colour = G.C.MULT}, card)
+	end
+}
+
+SMODS.Consumable {
+	key = "chicken",
+	set = "Product",
+	
+	atlas = "alloy_products",
+	pos = {
+		x = 2,
+		y = 1
+	},
+	soul_pos = {
+		x = 3,
+		y = 1
+	},
+	
+	config = {
+		extra = {
+			amount = 5,
+			health_healed = 30
+		}
+	},
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				colours = { get_hp_text_color() },
+				card.ability.extra.amount,
+				card.ability.extra.health_healed,
+				get_hp_text()
+			}
+		}
+	end,
+
+	can_use = function(self, card)
+		return ALLOY.hp_percentage(true, true) < 1 and G.hand and #G.hand.cards > 0
+	end,
+	use = function(self, card, area, copier)
+		local destroyed_cards = {}
+        local temp_hand = {}
+
+        for _, playing_card in ipairs(G.hand.cards) do temp_hand[#temp_hand + 1] = playing_card end
+        table.sort(temp_hand,
+            function(a, b)
+                return not a.playing_card or not b.playing_card or a.playing_card < b.playing_card
+            end
+        )
+
+        pseudoshuffle(temp_hand, 'alloy_chicken')
+
+        for i = 1, card.ability.extra.amount do 
+			destroyed_cards[#destroyed_cards + 1] = temp_hand[i] 
+		end
+
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.4,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.3, 0.5)
+                return true
+            end
+        }))
+        SMODS.destroy_cards(destroyed_cards)
+
+        delay(0.5)
+        ALLOY.ease_health(card.ability.extra.health_healed)
+        delay(0.3)
 	end
 }
 
@@ -1395,6 +1463,28 @@ SMODS.Consumable {
 	atlas = "alloy_coropal",
 	pos = { x = 8, y = 6 },
 	soul_pos = { x = 9, y = 6 },
+	config = { extra = { } },
+
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = { }
+		}
+	end,
+	
+	can_use = function(self, card)
+		return true
+	end,
+	
+	use = function(self, card, area, copier)
+	end
+}
+
+SMODS.Consumable {
+	key = "katzumo",
+	set = "Product",
+	atlas = "alloy_coropal",
+	pos = { x = 0, y = 7 },
+	soul_pos = { x = 1, y = 7 },
 	config = { extra = { } },
 
 	loc_vars = function(self, info_queue, card)

@@ -52,6 +52,11 @@ ALLOY.Hero {
 	config = {
 		key = 'golem',
 		rarity = 2,
+		atlas = "alloy_heroes",
+		pos = {
+			x = 1,
+			y = 0
+		},
 		cost = 8,
 		blueprint_compat = false,
 		config = {
@@ -101,6 +106,11 @@ ALLOY.Hero {
 	config = {
 		key = 'dilettante',
 		rarity = 1,
+		atlas = "alloy_heroes",
+		pos = {
+			x = 2,
+			y = 0
+		},
 		cost = 6,
 		blueprint_compat = false,
 		config = {
@@ -166,6 +176,11 @@ ALLOY.Hero {
 	config = {
 		key = 'assassin',
 		rarity = 2,
+		atlas = "alloy_heroes",
+		pos = {
+			x = 3,
+			y = 0
+		},
 		cost = 9,
 		blueprint_compat = false,
 		config = {
